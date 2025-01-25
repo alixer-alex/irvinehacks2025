@@ -18,7 +18,7 @@ const MainContent = (props) => (
     <section>
       <h1 className="text-xl font-bold">Main page</h1>
       <p>Home Page</p>
-      <DisplayGraph username={props.username} />
+      {/*<DisplayGraph username={props.username} />*/}
     </section>
   </main>
 );
