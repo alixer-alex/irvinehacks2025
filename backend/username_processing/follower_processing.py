@@ -78,13 +78,14 @@ class CentralAccount:
             raise Exception("Couldn't login user with either password or session")
         
 
-    def get_followers(self, username):
+    def get_followers(self, username: str):
         """
         Args:
             username: a string that represents the username from which to get the followers
         Returns:
             A dictionary that is of the format: {username_from_arg : [follower1name, follower2name]}
         """
+        
         pass
 
 
