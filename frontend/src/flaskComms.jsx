@@ -6,12 +6,12 @@ import "@react-sigma/core/lib/style.css";
 const sigmaStyle = { height: "1080px", width: "1080px" };
 
 // Component that load the graph
-export const LoadGraph = () => {
+export const LoadGraph = (username) => {
     const loadGraph = useLoadGraph();
     const [data, setData] = useState(null);
     useEffect(() => {
         const graph = new Graph();
-        fetch('../../backend/mutual_followers.json')
+        fetch('/api/'+ username.username)
         .then(response => response.json())
         .then(data => setData(data))
         .catch(error => console.log(error))
@@ -23,11 +23,12 @@ export const LoadGraph = () => {
     return null;
 }
 
+
 // Component that display the graph
-export const DisplayGraph = () => {
+export const DisplayGraph = (props) => {
   return (
     <SigmaContainer style={sigmaStyle}>
-      <LoadGraph />
+      <LoadGraph username={props.username}/>
     </SigmaContainer>
   );
 };
