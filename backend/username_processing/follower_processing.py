@@ -86,7 +86,7 @@ class CentralAccount:
         Returns:
             A dictionary that is of the format: {username_from_arg : [follower1name, follower2name]}
         """
-        # 
+        # get dictionary (key: user id, value: UserShort dict w username, etc.)
         dictt = self.central_account.user_followers(user_id=self.central_account.user_id)
         result = {username: []}
         for short in dictt.values():
