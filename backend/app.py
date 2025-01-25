@@ -13,7 +13,6 @@ app = Flask(__name__)
 def hello_world():
     return render_template("home.html")
 
-@app.route('/hello/')
 @app.route('/hello/<user_name>') # This route passes in a name to the hello method
 def hello(user_name=None):
     return render_template('hello.html', name=user_name)
