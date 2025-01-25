@@ -5,6 +5,7 @@ import './App.css'
 import DisplayGraph from './flaskComms.jsx'
 
 import React from 'react';
+import Navbar from './Components/Navbar/Navbar.jsx'
 
 const Header = () => <header className="p-4 bg-blue-500 text-white">Header</header>;
 
@@ -26,6 +27,7 @@ const Footer = () => <footer className="p-4 bg-blue-500 text-white">Footer</foot
 
 const Page = () => (
   <div className="flex flex-col min-h-screen">
+    <Navbar/>
     <Header />
     <div className="flex flex-1">
       <Sidebar />
