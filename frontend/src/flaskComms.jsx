@@ -5,10 +5,11 @@ import "@react-sigma/core/lib/style.css";
 import "@react-sigma/layout-noverlap";
 import { useLayoutNoverlap } from "@react-sigma/layout-noverlap";
 const sigmaStyle = { height: "1080px", width: "1080px" };
-const { positions, assign } = useLayoutNoverlap();
+
 // Component that load the graph
 export const LoadGraph = (username) => {
     const loadGraph = useLoadGraph();
+    const { positions, assign } = useLayoutNoverlap();
     const [data, setData] = useState(null);
     useEffect(() => {
         const graph = new Graph();
