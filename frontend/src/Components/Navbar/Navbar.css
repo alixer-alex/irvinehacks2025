@@ -4,8 +4,12 @@
   align-items: center;
   justify-content: space between;
   background: #a1a1a1;
-  opacity: 0.75;
+  opacity: 0.55;
   padding: 10px 7%;
+  transition: 0.5s;
+}
+.navbar:hover{
+  opacity: 1;
   transition: 0.5s;
 }
 ul{

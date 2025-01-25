@@ -7,23 +7,7 @@ import DisplayGraph from './flaskComms.jsx'
 import React from 'react';
 import Navbar from './Components/Navbar/Navbar.jsx'
 
-const Header = () => <header className="p-4 bg-blue-500 text-white">Header</header>;
 
-const Sidebar = () => (
-  <aside className="p-4 bg-gray-200 w-1/4">Sidebar</aside>
-);
-
-const MainContent = (props) => (
-  <main className="p-4 flex-1">
-    <section>
-      <h1 className="text-xl font-bold">Main page</h1>
-      <p>Home Page</p>
-      {/*<DisplayGraph username={props.username} />*/}
-    </section>
-  </main>
-);
-
-const Footer = () => <footer className="p-4 bg-blue-500 text-white">Footer</footer>;
 
 function Page () {
   const [username, setUsername] = useState("");
@@ -34,18 +18,57 @@ function Page () {
   useEffect(()=>{
     localStorage.setItem('current_theme', theme);
   },[theme])
+  // const Header = () => <header className="p-4 bg-blue-500 text-white">Header</header>;
 
+// const Sidebar = () => (
+//   <aside className="p-4 bg-gray-200 w-1/4">Sidebar</aside>
+// );
+
+  const MainContent = (props) => (
+    <main className="main">
+      <section>
+        <h1 className="text-box">Enter Instagram Username: </h1>
+        {/*<DisplayGraph username={props.username} />*/}
+      </section>
+    </main>
+  );
+
+  // const Footer = () => <footer className="p-4 bg-blue-500 text-white">Footer</footer>;
+
+  const handleEnter = (value) => {
+    // alert(`you pressed enter w/: ${value}`);
+    console.log(value.value);
+    setUsername(value.value)
+  };
+
+  const User_Input = ({ label}) => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter') {
+        handleEnter(e.target); // Call onEnter handler when Enter is pressed
+      }
+    };
+
+  return (
+    <div className="input">
+      <label>{label}</label>
+      <input
+        type="text"
+        onKeyDown={handleKeyDown} // Listen for key presses
+      />
+    </div>
+  )
+};
   return (
     <div className={`container ${theme}`}>
       <Navbar theme={theme} setTheme={setTheme}/>
     <div className="flex flex-col min-h-screen">
-      <Header />
+      <MainContent username = {username}/>
+      <User_Input/>
       <div className="flex flex-1">
-        <Sidebar />
+        {/* <Sidebar /> */}
       
-        <MainContent username = {username}/>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
     </div>
   )
