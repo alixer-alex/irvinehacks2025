@@ -1,5 +1,7 @@
-{"data":
-    {"steven":
-        ["alex"],
+{
+    "steven":
+        ["alex","jessica"],
     "alex":
-        ["steven"]}}
+        ["steven"],
+    "jessica":
+        ["steven"]}
