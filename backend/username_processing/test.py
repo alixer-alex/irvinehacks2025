@@ -5,7 +5,7 @@ import logging
 
 
 # cl = Client()
-# cl.login("filthy_franks_partner", "1028571DV")
+# cl.login("steveyivicious", "1028571DV*")
 # print(cl.user_id)
 
 # followers = cl.user_followers(cl.user_id, amount=1)
