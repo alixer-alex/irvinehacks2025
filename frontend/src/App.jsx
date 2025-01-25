@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import './App.css'
-import './comms.jsx'
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 
