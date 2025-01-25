@@ -86,7 +86,7 @@ class CentralAccount:
         Returns:
             A dictionary that is of the format: {username_from_arg : [follower1name, follower2name]}
         """
-        # 
+        #
         user_id = self.central_account.user_info_by_username(username) #need to parse
         dictt = self.central_account.user_followers(user_id)
         ###TODO: USER_ID ABOVE IS USING THE ID OF THE CENTRAL ACCOUNT
