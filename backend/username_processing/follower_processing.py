@@ -2,6 +2,8 @@ from instagrapi import Client
 import instagrapi as i
 from instagrapi.exceptions import LoginRequired
 import logging
+from pathlib import Path
+import json
 import inspect
 
 
@@ -84,22 +86,55 @@ class CentralAccount:
         Returns:
             A dictionary that is of the format: {username_from_arg : [follower1name, follower2name]}
         """
+        # 
         dictt = self.central_account.user_followers(user_id=self.central_account.user_id)
         result = {username: []}
         for short in dictt.values():
            result[username].append(short.username)
         return result
 
-    def write_followers(self):
-        pass
 
+    def write_followers(self, user_with_followers: dict):
+        """
+        Writes to all_followers.json by appending to its current dictionary with the new dictionary
+    
+        Args:
+            user_with_followers: a dictionary of the format: {username : [follower1name, follower2name]}
+        Returns:
+            void.
+        """
+        with open("all_followers.json", "r") as infile:
+            old_users_and_flwrs = infile.read() #returns a string
+
+        #parse the old data
+        parsed_old_users_and_flwrs = json.loads(old_users_and_flwrs)
+
+        #append the new data to the old
+        parsed_old_users_and_flwrs.update(user_with_followers)
+
+        #write it back to the file
+        with open("all_followers.json", "w") as outfile:
+            json.dump(parsed_old_users_and_flwrs, outfile)
 
 
     
+
+
+
+def first_time_login_user():
+    cl = Client()
+    cl.login(USERNAME, PASSWORD)
+    cl.dump_settings("session.json")
+    return cl
 
 if __name__ == '__main__':
     c = CentralAccount()
     c.login_user()
     print(c.get_followers("steveyivicious"))
+    #a = CentralAccount()
+    #a.login_user()
+    #print(inspect.signature(a.central_account.user_id_from_username))
+    #print(a.central_account.user_info_by_username(USERNAME))
+    #print(a.central_account.user_followers("70684503354"))
     
-
+    

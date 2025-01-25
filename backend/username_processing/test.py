@@ -2,6 +2,7 @@
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired
 import logging
+import inspect
 
 
 
@@ -14,6 +15,7 @@ def first_time_login_user():
     cl = Client()
     cl.login(USERNAME, PASSWORD)
     cl.dump_settings("session.json")
+    return cl
 ######################################
 
 # cl = Client()
@@ -28,4 +30,9 @@ def first_time_login_user():
 #print(cl.user_followers("70684503354")) 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     first_time_login_user()
+=======
+    #first_time_login_user()
+    pass
+>>>>>>> ffcdcf6e3a3afb845a34e6ebdd3f318f60d44761
