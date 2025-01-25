@@ -16,8 +16,4 @@ function App() {
   )
 }
 
-export default defineConfig({
-  plugins: [
-    tailwindcss(),
-  ],
-});
+export default App();
