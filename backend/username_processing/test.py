@@ -26,3 +26,6 @@ def first_time_login_user():
 
 ###THIS WORKS AFTER YOU LOAD THE SESSION SETTINGS. NO LOGIN NEDED.
 #print(cl.user_followers("70684503354")) 
+
+if __name__ == '__main__':
+    first_time_login_user()
