@@ -6,8 +6,8 @@ function App() {
 
   return (
     <>
-      <label for="user_name">Enter Your Instagram Username: </label>
-
+      <label for="user_name">Enter Your Instagramm Username: </label>
+      
       <input type="text" id="name" name="name" required minlength="4" maxlength="8" size="10" />
     </>
   )
