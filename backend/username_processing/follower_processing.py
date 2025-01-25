@@ -1,6 +1,9 @@
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired
 import logging
+from pathlib import Path
+import json
+import inspect
 
 
 USERNAME = "steveyivicious"
@@ -25,39 +28,40 @@ def example(a, b):
 
 
 class CentralAccount:
-    central_account = Client()
+    def __init__(self):
+        self.central_account = Client()
 
-    def login_user():
+    def login_user(self):
         """
         Attempts to login to Instagram using either the provided session information
         or the provided username and password.
         """
         logger = logging.getLogger()
 
-        central_account = Client()
-        session = central_account.load_settings("session.json")
+        self.central_account = Client()
+        session = self.central_account.load_settings("session.json")
 
         login_via_session = False
         login_via_pw = False
 
         if session:
             try:
-                central_account.set_settings(session)
-                central_account.login(USERNAME, PASSWORD)
+                self.central_account.set_settings(session)
+                self.central_account.login(USERNAME, PASSWORD)
 
                 # check if session is valid
                 try:
-                    central_account.get_timeline_feed()
+                    self.central_account.get_timeline_feed()
                 except LoginRequired:
                     logger.info("Session is invalid, need to login via username and password")
 
                     old_session = central_account.get_settings()
 
                     # use the same device uuids across logins
-                    central_account.set_settings({})
-                    central_account.set_uuids(old_session["uuids"])
+                    self.central_account.set_settings({})
+                    self.central_account.set_uuids(old_session["uuids"])
 
-                    central_account.login(USERNAME, PASSWORD)
+                    self.central_account.login(USERNAME, PASSWORD)
                 login_via_session = True
             except Exception as e:
                 logger.info("Couldn't login user using session information: %s" % e)
@@ -65,7 +69,7 @@ class CentralAccount:
         if not login_via_session:
             try:
                 logger.info("Attempting to login via username and password. username: %s" % USERNAME)
-                if central_account.login(USERNAME, PASSWORD):
+                if self.central_account.login(USERNAME, PASSWORD):
                     login_via_pw = True
             except Exception as e:
                 logger.info("Couldn't login user using username and password: %s" % e)
@@ -74,7 +78,7 @@ class CentralAccount:
             raise Exception("Couldn't login user with either password or session")
         
 
-    def get_followers(username):
+    def get_followers(self, username):
         """
         Args:
             username: a string that represents the username from which to get the followers
@@ -83,14 +87,46 @@ class CentralAccount:
         """
         pass
 
-    def write_followers():
-        pass
 
+    def write_followers(self, user_with_followers: dict):
+        """
+        Writes to all_followers.json by appending to its current dictionary with the new dictionary
+    
+        Args:
+            user_with_followers: a dictionary of the format: {username : [follower1name, follower2name]}
+        Returns:
+            void.
+        """
+        with open("all_followers.json", "r") as infile:
+            old_users_and_flwrs = infile.read() #returns a string
+
+        #parse the old data
+        parsed_old_users_and_flwrs = json.loads(old_users_and_flwrs)
+
+        #append the new data to the old
+        parsed_old_users_and_flwrs.update(user_with_followers)
+
+        #write it back to the file
+        with open("all_followers.json", "w") as outfile:
+            json.dump(parsed_old_users_and_flwrs, outfile)
 
 
     
+
+
+
+def first_time_login_user():
+    cl = Client()
+    cl.login(USERNAME, PASSWORD)
+    cl.dump_settings("session.json")
+    return cl
 
 if __name__ == '__main__':
-    login_user()
+    pass
+    #a = CentralAccount()
+    #a.login_user()
+    #print(inspect.signature(a.central_account.user_id_from_username))
+    #print(a.central_account.user_info_by_username(USERNAME))
+    #print(a.central_account.user_followers("70684503354"))
     
-
+    
