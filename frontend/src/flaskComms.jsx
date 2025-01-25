@@ -1,14 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from "react";
+import Graph from "graphology";
+import { SigmaContainer, useLoadGraph } from "@react-sigma/core";
+import "@react-sigma/core/lib/style.css";
 
-function App() {
-    const [currentTime, setCurrentTime] = useState(0);
-  
-    useEffect(() => {
-      fetch('/time').then(res => res.json()).then(data => {
-        setCurrentTime(data.time);
-      });
-    }, []);
-    return currentTime;
-  }
-  
-  export default App;
+const sigmaStyle = { height: "500px", width: "500px" };
+
+// Component that load the graph
+export const LoadGraph = () => {
+  const loadGraph = useLoadGraph();
+
+  useEffect(() => {
+    const graph = new Graph();
+    graph.addNode("first", { x: 0, y: 0, size: 15, label: "My first node", color: "#FA4F40" });
+    loadGraph(graph);
+  }, [loadGraph]);
+
+  return null;
+};
+
+// Component that display the graph
+export const DisplayGraph = () => {
+  return (
+    <SigmaContainer style={sigmaStyle}>
+      <LoadGraph />
+    </SigmaContainer>
+  );
+};
+  export default DisplayGraph;
