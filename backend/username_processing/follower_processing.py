@@ -2,6 +2,8 @@ from instagrapi import Client
 
 """
 Remember: A connection between nodes is only made when people follow each other
+
+You'll be receiving the username of the new person that entered their username
 """
 
 
