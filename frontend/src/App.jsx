@@ -2,6 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import DisplayGraph from './flaskComms.jsx'
 
 import React from 'react';
 
@@ -16,6 +17,7 @@ const MainContent = () => (
     <section>
       <h1 className="text-xl font-bold">Main page</h1>
       <p>Home Page</p>
+      <DisplayGraph />
     </section>
   </main>
 );
@@ -30,6 +32,7 @@ const Page = () => (
       <MainContent />
     </div>
     <Footer />
+
   </div>
 );
 
