@@ -27,7 +27,7 @@ def example(a, b):
 class CentralAccount:
     central_account = Client()
 
-    def login_user():
+    def login_user(self):
         """
         Attempts to login to Instagram using either the provided session information
         or the provided username and password.
@@ -74,16 +74,17 @@ class CentralAccount:
             raise Exception("Couldn't login user with either password or session")
         
 
-    def get_followers(username):
+    def get_followers(self, username: str):
         """
         Args:
             username: a string that represents the username from which to get the followers
         Returns:
             A dictionary that is of the format: {username_from_arg : [follower1name, follower2name]}
         """
+        
         pass
 
-    def write_followers():
+    def write_followers(self):
         pass
 
 
