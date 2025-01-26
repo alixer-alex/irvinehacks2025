@@ -166,9 +166,6 @@ class CentralAccount:
                 both_following = frozenset(follower_list) & frozenset(new_user[new_user_username])
                 #if the new_user is in the user's follower list, and the user is in the new_user's flwr list
                 if (new_user_username in follower_list) & (other_username in new_user[new_user_username]):
-                    #knowing that this is the one and only time the person represented by username will
-                    #have to update their mutual follower list during this function...
-
                     #so update the new user's mutuals first
                     mutuals[new_user_username].append(other_username)
 
