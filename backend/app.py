@@ -15,9 +15,9 @@ master = follower_processing.startup()
 # @app.route('/api/username?')
 # def get_current_time():
 #     return {'time': time.time()}
-#@app.route('/')
-#def home():
-	#return Response()
+@app.route('/')
+def home():
+	return render_template('/dist/index.html')	
 
 #when someone visits http://localhost:5173/api/<username>, get_username is called
 @app.route('/api/<username>', methods=['GET'])
