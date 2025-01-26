@@ -158,29 +158,33 @@ class CentralAccount:
 
         #for each user from all_followers
         for other_username, follower_list in followers.items():
-            other_users_new_mutuals = []
-            both_following = frozenset(follower_list) & frozenset(new_user[new_user_username])
-            #if the new_user is in the user's follower list, and the user is in the new_user's flwr list
-            if (new_user_username in follower_list) & (other_username in new_user[new_user_username]):
-                #knowing that this is the one and only time the person represented by username will
-                #have to update their mutual follower list during this function...
+            #if the new_user is already in update_all_followers
+            if other_username == new_user_username:
+                pass
+            else:
+                other_users_new_mutuals = []
+                both_following = frozenset(follower_list) & frozenset(new_user[new_user_username])
+                #if the new_user is in the user's follower list, and the user is in the new_user's flwr list
+                if (new_user_username in follower_list) & (other_username in new_user[new_user_username]):
+                    #knowing that this is the one and only time the person represented by username will
+                    #have to update their mutual follower list during this function...
 
-                #so update the new user's mutuals first
-                mutuals[new_user_username].append(other_username)
+                    #so update the new user's mutuals first
+                    mutuals[new_user_username].append(other_username)
 
-                #then add the new user's username to the other user's slated mutuals
-                other_users_new_mutuals.append(new_user_username)
+                    #then add the new user's username to the other user's slated mutuals
+                    other_users_new_mutuals.append(new_user_username)
+                    
+                #if the new_user follows a same person as the other user (the user from the json)
+                if len(both_following) != 0: 
+                    mutuals[new_user_username] = list(frozenset().union(*[frozenset(mutuals[new_user_username]), both_following]))
+                    #long list frozenset() yada yada call not ncessary for other_users_new_mutuals, because that's checked in
+                    #update_mutuals
+                    other_users_new_mutuals += list(both_following)
                 
-            #if the new_user follows a same person as the other user (the user from the json)
-            if len(both_following) != 0: 
-                mutuals[new_user_username] = list(frozenset().union(*[frozenset(mutuals[new_user_username]), both_following]))
-                #long list frozenset() yada yada call not ncessary for other_users_new_mutuals, because that's checked in
-                #update_mutuals
-                other_users_new_mutuals += list(both_following)
-            
-            #update the other user's mutuals list on mutual_followers.json, if not empty
-            if len(other_users_new_mutuals) != 0:
-                self.update_mutuals(other_username, other_users_new_mutuals)
+                #update the other user's mutuals list on mutual_followers.json, if not empty
+                if len(other_users_new_mutuals) != 0:
+                    self.update_mutuals(other_username, other_users_new_mutuals)
 
         return mutuals
 
@@ -288,9 +292,18 @@ def first_time_login_user():
 
 
 if __name__ == '__main__':
-    pass
-    #a = startup()
-    #a.add_mutuals(a.get_mutuals({"jad_umb": ["natbagel", "frank.yeh808", "anshuxs", "therealaidanvara", "justin.siek", "maiiithy", "the_awesome_akam_khinda", "sushikirbz", "nguyenxjason", "pentium.girl", "thia.io", "neeraj_savd", "leen.ramesh", "mark.zshao", "dylandsd", "maria.wroblewska007", "daniel.in.motion", "stefany_ruan", "kim_ssangmin", "joseap.t", "aarushi_poo", "armanoid_creature", "g_ls07", "yum_my023", "hrishi.meh", "uci_oit", "novytsang", "koko_okrunch", "rizzyizzie_", "mister.shem", "sicazy", "uci_elp", "peter__ou", "notiwah", "hdola_ewy", "lucaschin_", "nick_vuong", "gabecpz_", "ayaka.nakamura_", "kswagger098", "ivvan._", "bon.nie.man", "kginac", "sicazhang", "leading2succeed_", "dqfuq", "eric.l30", "jasen5196", "anth.tm", "ji.wonh", "alixer_alex", "allegro.sostenuto", "furby.duck", "ssarah.yuan", "janicezhxng", "novy.tsang", "sara.uchida", "boomin.alex", "maximilian_fkonrad", "izel.sanchez", "asiantimo", "littlepeace2005", "yum_ni_023", "jamesu.park", "isabellayi111", "ranrannn_0307", "michael_ashfo", "te_evan", "jiwooplays2k", "akshira._", "coltjmcguire", "jenna._.peng", "kellyallexa", "efhta", "emilio_lim", "harrisxu_", "medhab3", "vajraaang", "vincent.liu1", "samsammy184", "howtobecomelakshgupta", "_katelynbellows", "crusadercrisp", "josephd13_", "elaineliu__", "sanjaysvelan", "mushmooshroom", "annishpattani04", "gabcel1ne", "babyyodz_z", "tofu_birdie", "matthewgraygublersbiggestfan", "em_mazuo", "samuel.wang12", "aishahid786", "lord_ingram", "davidwanggggggg", "realestthugsri", "kayeeeechen", "chloemmeyer", "adeeba.mohammed", "abhinavtiruveedhula", "halcyankeh", "poojadave22", "sai.my.guy", "sohajashwant", "justin_yang_148", "kristennnnnsss", "amrit.addanki", "henryliu8", "goofy_goomber", "soha_jashwant", "practice.with.wyatt", "jshinkart.aiart", "doubleaa02", "jiwoo.h.yung", "dsarthak_19", "shivaniarya_", "rishavs01", "joeyc_skt", "calamarho", "abhi.someswar", "brand_new.song", "ellla.li", "moreortess", "timtamotheus", "stevozeng", "elsa.joy", "jennyxun_", "5elina.he", "armaanchadha__", "highonjuice_", "harshith.sadhu", "rishikhott", "_lia_ah__", "rbeccalee", "guobropro", "trannguyen_225", "stirfryfood", "gautham.inq", "ianmbeamer", "kaushish.kebab", "ryanchennnnnn", "downisdown1", "choppsthicc", "koryoboi", "jjojoof", "joyce.liang0", "shwetananaaware", "danielxzhao", "crustalyang", "elleenie.kim", "ramenking333", "isabellliu", "luharok06", "_elisabeth.mathis_", "allisonn.kim", "a.kimchi_", "guava.ram", "greydanv", "qwertywiejxndb_742", "presidentsamlu", "numberlinksnumber1", "francis_li1", "ian_vo_7", "jakeshin9", "jongyunshin229", "bo.nguyxn", "russ_c4", "tiff.anyluong", "lqurq.l", "alexhshi", "abhiritdas", "hitstarana", "disar_ray_", "harshinisriniv", "theultrahdgamer", "_rohansrinivas_", "_kennethyao", "seter_pong", "sanjanaaap", "un.ecorn", "nicolexxuu", "maya.kookie97", "its.eugene", "mwathayu__k100", "matt22k_", "stegosaurus_in_highschool", "sahillalaniii", "rikiszstudio", "chanev_05", "ht_wuwu", "braandonalee", "diegojs2005", "13r4dy", "rachael.yna", "a.terry__", "gallardoalexis4", "jam_bakrin", "hongdou_taro", "marcus_goobie", "abhiritdas2", "wholesome_memes13", "duncantlynch", "superstorm202", "mixerstreamerscentral", "a.das_13", "thiccpapibreadloaf", "_________nayao", "prmdyaputra_77", "loneranger_808", "jack_g.j", "thespicyvariety", "shivaay22"]}))
+    # a = {"a" : ["b", "c"]}
+    # a.update({"a" : ["b"]})
+    # print(a)
+    a = startup()
+    b = {"jad_umb": ["natbagel", "frank.yeh808", "anshuxs", "therealaidanvara", "justin.siek", "maiiithy", "the_awesome_akam_khinda", "sushikirbz", "nguyenxjason", "pentium.girl", "thia.io", "neeraj_savd", "leen.ramesh", "mark.zshao", "dylandsd", "maria.wroblewska007", "daniel.in.motion", "stefany_ruan", "kim_ssangmin", "joseap.t", "aarushi_poo", "armanoid_creature", "g_ls07", "yum_my023", "hrishi.meh", "uci_oit", "novytsang", "koko_okrunch", "rizzyizzie_", "mister.shem", "sicazy", "uci_elp", "peter__ou", "notiwah", "hdola_ewy", "lucaschin_", "nick_vuong", "gabecpz_", "ayaka.nakamura_", "kswagger098", "ivvan._", "bon.nie.man", "kginac", "sicazhang", "leading2succeed_", "dqfuq", "eric.l30", "jasen5196", "anth.tm", "ji.wonh", "alixer_alex", "allegro.sostenuto", "furby.duck", "ssarah.yuan", "janicezhxng", "novy.tsang", "sara.uchida", "boomin.alex", "maximilian_fkonrad", "izel.sanchez", "asiantimo", "littlepeace2005", "yum_ni_023", "jamesu.park", "isabellayi111", "ranrannn_0307", "michael_ashfo", "te_evan", "jiwooplays2k", "akshira._", "coltjmcguire", "jenna._.peng", "kellyallexa", "efhta", "emilio_lim", "harrisxu_", "medhab3", "vajraaang", "vincent.liu1", "samsammy184", "howtobecomelakshgupta", "_katelynbellows", "crusadercrisp", "josephd13_", "elaineliu__", "sanjaysvelan", "mushmooshroom", "annishpattani04", "gabcel1ne", "babyyodz_z", "tofu_birdie", "matthewgraygublersbiggestfan", "em_mazuo", "samuel.wang12", "aishahid786", "lord_ingram", "davidwanggggggg", "realestthugsri", "kayeeeechen", "chloemmeyer", "adeeba.mohammed", "abhinavtiruveedhula", "halcyankeh", "poojadave22", "sai.my.guy", "sohajashwant", "justin_yang_148", "kristennnnnsss", "amrit.addanki", "henryliu8", "goofy_goomber", "soha_jashwant", "practice.with.wyatt", "jshinkart.aiart", "doubleaa02", "jiwoo.h.yung", "dsarthak_19", "shivaniarya_", "rishavs01", "joeyc_skt", "calamarho", "abhi.someswar", "brand_new.song", "ellla.li", "moreortess", "timtamotheus", "stevozeng", "elsa.joy", "jennyxun_", "5elina.he", "armaanchadha__", "highonjuice_", "harshith.sadhu", "rishikhott", "_lia_ah__", "rbeccalee", "guobropro", "trannguyen_225", "stirfryfood", "gautham.inq", "ianmbeamer", "kaushish.kebab", "ryanchennnnnn", "downisdown1", "choppsthicc", "koryoboi", "jjojoof", "joyce.liang0", "shwetananaaware", "danielxzhao", "crustalyang", "elleenie.kim", "ramenking333", "isabellliu", "luharok06", "_elisabeth.mathis_", "allisonn.kim", "a.kimchi_", "guava.ram", "greydanv", "qwertywiejxndb_742", "presidentsamlu", "numberlinksnumber1", "francis_li1", "ian_vo_7", "jakeshin9", "jongyunshin229", "bo.nguyxn", "russ_c4", "tiff.anyluong", "lqurq.l", "alexhshi", "abhiritdas", "hitstarana", "disar_ray_", "harshinisriniv", "theultrahdgamer", "_rohansrinivas_", "_kennethyao", "seter_pong", "sanjanaaap", "un.ecorn", "nicolexxuu", "maya.kookie97", "its.eugene", "mwathayu__k100", "matt22k_", "stegosaurus_in_highschool", "sahillalaniii", "rikiszstudio", "chanev_05", "ht_wuwu", "braandonalee", "diegojs2005", "13r4dy", "rachael.yna", "a.terry__", "gallardoalexis4", "jam_bakrin", "hongdou_taro", "marcus_goobie", "abhiritdas2", "wholesome_memes13", "duncantlynch", "superstorm202", "mixerstreamerscentral", "a.das_13", "thiccpapibreadloaf", "_________nayao", "prmdyaputra_77", "loneranger_808", "jack_g.j", "thespicyvariety", "shivaay22"]}
+    main_process_username("jad_umb", a)
+    with open("mutual_followers.json") as infile:
+        bruh = json.loads(infile.read())
+    print(len(bruh["jad_umb"]))
+    with open("all_followers.json") as infile:
+        moment = json.loads(infile.read())
+    print(len(b["jad_umb"]))
     #print(list(frozenset().union(*[frozenset(["a", "b"]), (frozenset(["c", "b"]))])))
     #b = {"bob" : ["sam", "steven"]}
     #a.update_all_followers(b)
