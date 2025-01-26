@@ -28,7 +28,7 @@ function Page () {
     <main className="main">
       <section>
         <h1 className="text-box">Enter Instagram Username: </h1>
-        {/*<DisplayGraph username={props.username} />*/}
+        <DisplayGraph username={props.username} />
       </section>
     </main>
   );

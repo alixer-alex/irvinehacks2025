@@ -15,6 +15,10 @@ const Navbar = ({theme, setTheme}) => {
     <div className='navbar'>
       <img src={""} alt="" className=''/>
 
+      {/* <div className="icon">
+        <img src={icon} alt="" className=""/>
+      </div> */}
+
       <ul>
         <li>Home</li>
         <li>About</li>

@@ -12,10 +12,16 @@
   opacity: 1;
   transition: 0.5s;
 }
+/* .icon{
+  width: 25px;
+  cursor: pointer;
+  margin-left: 5px;
+} */
+
 ul{
   flex: 1;
   list-style: none;
-  text-align: center;
+  text-align: left;
 }
 
 ul li{
