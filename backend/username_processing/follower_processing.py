@@ -252,6 +252,12 @@ def startup():
     return central_account
 
 
+def main_process_username(username: str, ctr_acc: CentralAccount):
+    flwrs_dict = ctr_acc.get_followers(username)
+    ctr_acc.update_all_followers(flwrs_dict)
+    flwr_mutuals = ctr_acc.get_mutuals(flwrs_dict) #remember, this also updates the mutual follower lists of other accs
+    ctr_acc.add_mutuals(flwr_mutuals)
+
 
 ###RUN EACH TIME YOU PULL FROM GITHUB### TODO: FIGURE OUT IF THIS WILL WORK WHEN YOU PUBLISH THE PROJECT
 def first_time_login_user():
