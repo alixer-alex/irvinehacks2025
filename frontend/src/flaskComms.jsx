@@ -74,10 +74,10 @@ export const LoadGraph = (username) => {
 
 export const DisplayGraph = (props) => {
   return (
-  <div className="sigma_graph">
+  <div className="sigma_graph" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
     <SigmaContainer>
     <LoadGraph username={props.username}/>
-  </SigmaContainer>
+    </SigmaContainer>
   </div>
 );
 };
