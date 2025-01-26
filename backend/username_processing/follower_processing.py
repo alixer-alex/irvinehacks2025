@@ -260,12 +260,13 @@ def first_time_login_user():
 
 
 if __name__ == '__main__':
-    a = CentralAccount()
+    pass
+    #a = CentralAccount()
     #print(a.get_followers("steveyivicious")) #DOESN'T WORK AND CAUSES EXCEPTIONS
-    a.login_user()
+    #a.login_user()
     
-    new_mutuals = {"jessica": ["steven"]}
-    print(a.get_mutuals(new_mutuals))
+    #new_mutuals = {"jessica": ["steven"]}
+    #print(a.get_mutuals(new_mutuals))
 
     # with Path("C:\\Programming\\IrvineHacks2025\\irvinehacks2025\\backend\\username_processing\\empty.json").open("r") as infile:
     #     empty_str = infile.read()
