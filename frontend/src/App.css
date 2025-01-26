@@ -84,12 +84,3 @@ body{
   border-color: #000000; */
   position: absolute; left: -50%;
 }
-.sigma_graph.dark{
-  height: 500px;
-  width: 100%;
-  /* border-style: solid;
-  border-color: #000000; */
-  position: absolute; left: -50%;
-  transition: 0.5s;
-  background: #222;
-}

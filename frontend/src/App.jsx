@@ -22,11 +22,11 @@ function Page () {
 
   const MainContent = (props) => (
 //    <main className="main">
-    <main className={`main ${theme}`}>
+    <main className="main">
       <section>
         <h1 className="text-label">Enter Instagram Username: </h1>
         <User_Input/>
-        <DisplayGraph theme={theme} username={props.username} />
+        <DisplayGraph username={props.username} />
       </section>
     </main>
   );
@@ -58,10 +58,10 @@ function Page () {
   )
 };
   return (
-    <div className={`container ${theme}`}>
+    <div className="container">
       <Navbar theme={theme} setTheme={setTheme}/>
     <div className="flex flex-col min-h-screen">
-      <MainContent theme={theme} username = {username}/>
+      <MainContent username = {username}/>
       <div className="flex flex-1">
       
       </div>

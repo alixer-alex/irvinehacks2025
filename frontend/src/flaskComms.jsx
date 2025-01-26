@@ -101,9 +101,9 @@ export const LoadGraph = (username) => {
     return null;
 }
 
-export const DisplayGraph = (theme, props) => {
+export const DisplayGraph = (props) => {
   return (
-  <div className={`sigma_graph${theme}`} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+  <div className="sigma_graph" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
     <SigmaContainer>
       <ControlsContainer position={'bottom-right'}>
         <LoadGraph username={props.username}/>
