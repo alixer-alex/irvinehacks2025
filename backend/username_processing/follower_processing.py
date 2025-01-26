@@ -126,6 +126,8 @@ class CentralAccount:
     def get_mutuals(self, new_user: dict):
         """
         Gets the mutual followers of a user by checking the all_folowers.json file
+        Assumes the new_user is not in the all_followers.json, because it doesn't check for duplicate
+        followers in new_user
 
         From an optimized design perspective, you only need to check if the new person being added
         has any mutuals with any existing users within the all_followers.json file.
@@ -154,18 +156,31 @@ class CentralAccount:
         else:
             followers = json.loads(contents)
 
-        #for each user
-        for username, follower_list in followers.items():
+        #for each user from all_followers
+        for other_username, follower_list in followers.items():
+            other_users_new_mutuals = []
+            both_following = frozenset(follower_list) & frozenset(new_user[new_user_username])
             #if the new_user is in the user's follower list, and the user is in the new_user's flwr list
-            if (new_user_username in follower_list) & (username in new_user[new_user_username]):
+            if (new_user_username in follower_list) & (other_username in new_user[new_user_username]):
                 #knowing that this is the one and only time the person represented by username will
                 #have to update their mutual follower list during this function...
 
                 #so update the new user's mutuals first
-                mutuals[new_user_username].append(username)
+                mutuals[new_user_username].append(other_username)
 
-                #then update the other user's mutuals
-                self.update_mutuals(username, [new_user_username])
+                #then add the new user's username to the other user's slated mutuals
+                other_users_new_mutuals.append(new_user_username)
+                
+            #if the new_user follows a same person as the other user (the user from the json)
+            if len(both_following) != 0: 
+                mutuals[new_user_username] = list(frozenset().union(*[frozenset(mutuals[new_user_username]), both_following]))
+                #long list frozenset() yada yada call not ncessary for other_users_new_mutuals, because that's checked in
+                #update_mutuals
+                other_users_new_mutuals += list(both_following)
+            
+            #update the other user's mutuals list on mutual_followers.json, if not empty
+            if len(other_users_new_mutuals) != 0:
+                self.update_mutuals(other_username, other_users_new_mutuals)
 
         return mutuals
 
@@ -201,6 +216,8 @@ class CentralAccount:
             parsed_old_mutual_flwrs[username] = new_mutuals
         else:
             #all this set math is done to prevent duplicate follower names in the follower's list
+            #Add the new followers to the mutual followers list. Only new followers not currently
+            #present in mutual followers list already.
             parsed_old_mutual_flwrs[username] = list(frozenset().union(*[frozenset(parsed_old_mutual_flwrs[username]), (frozenset(new_mutuals))]))
 
         #write it back into the file
@@ -271,9 +288,12 @@ def first_time_login_user():
 
 
 if __name__ == '__main__':
-    a = startup()
+    pass
+    #a = startup()
     #print(list(frozenset().union(*[frozenset(["a", "b"]), (frozenset(["c", "b"]))])))
-    a.update_mutuals("steven", ["alex", "jessica"])
+    #b = {"bob" : ["sam", "steven"]}
+    #a.update_all_followers(b)
+    #a.add_mutuals(a.get_mutuals(b))
     #main_process_username("steveyivicious", a)
 
     #new_mutuals = {"jessica": ["steven"]}
