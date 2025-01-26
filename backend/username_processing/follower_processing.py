@@ -145,7 +145,7 @@ class CentralAccount:
         mutuals = {new_user_username : []}
 
         #get the all_followers string
-        with Path("all_followers.json").open('r') as infile:
+        with open("all_followers.json", 'r') as infile:
             contents = infile.read()
         #convert the string into a dictionary
         if (contents == ""):
@@ -243,6 +243,12 @@ class CentralAccount:
             json.dump(parsed_old_mutual_flwrs, outfile)
 
 
+def startup():
+    central_account = CentralAccount()
+    central_account.login_user()
+    return central_account
+
+
 
 ###RUN EACH TIME YOU PULL FROM GITHUB### TODO: FIGURE OUT IF THIS WILL WORK WHEN YOU PUBLISH THE PROJECT
 def first_time_login_user():
@@ -252,11 +258,14 @@ def first_time_login_user():
     return cl
 
 
+
 if __name__ == '__main__':
     a = CentralAccount()
+    #print(a.get_followers("steveyivicious")) #DOESN'T WORK AND CAUSES EXCEPTIONS
     a.login_user()
-    #new_mutuals = {"jessica": ["steven"]}
-    #a.add_mutuals(a.get_mutuals(new_mutuals))
+    
+    new_mutuals = {"jessica": ["steven"]}
+    print(a.get_mutuals(new_mutuals))
 
     # with Path("C:\\Programming\\IrvineHacks2025\\irvinehacks2025\\backend\\username_processing\\empty.json").open("r") as infile:
     #     empty_str = infile.read()
