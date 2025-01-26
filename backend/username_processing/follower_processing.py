@@ -136,7 +136,17 @@ class CentralAccount:
         Returns:
             A dictionary of the format {"user's-username-here" : [mutualfollower1, mutualfollower2]}
         """
-        pass
+        mutuals = {new_user.keys()[0]: []}
+        file = open('all_followers.json', 'r')
+        contents = file.read()
+        followers = json.loads(contents)
+        
+        file.close()
+
+        return mutuals
+
+
+
 
 
     def update_mutuals(self, new_mutuals: dict):
@@ -197,5 +207,6 @@ if __name__ == '__main__':
     #print(inspect.signature(a.central_account.user_id_from_username))
     #print(a.central_account.user_info_by_username(USERNAME))
     #print(a.central_account.user_followers("13586646940"))
-    
+
+    print(a.get_mutuals(a.get_followers("steveyivicious")))
     
