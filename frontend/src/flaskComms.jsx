@@ -32,23 +32,24 @@ export const LoadGraph = (username) => {
     }
     useEffect(() => {
         const graph = new Graph();
-        let temp = null;
+        
         console.log(username.username)
         getData().then(
           data => {
-            console.log(data.data);
-            for (let key in data.data){
+            
+            for (let key in data){
               console.log(key);
               graph.addNode(key, { x: 0, y: 0, size: 15, label: key, color: "##FF0000"});
             }
-            for (let key in data.data){
-              for(let i=0;i<data.data[key].length;i++){
-                let value = data.data[key][i];
-                console.log(graph.nodes())
+            for (let key in data){
+              for(let i=0;i<data[key].length;i++){
+                let value = data[key][i];
+                console.log(graph.edges())
                 if(!graph.nodes().includes(value)){
                   graph.addNode(value, { x: 0, y: 0, size: 15, label: value, color: "##00FF00"});
                 }
                 graph.addEdge(key,value);
+                console.log(graph.edges())
               }
             }
             loadGraph(graph);

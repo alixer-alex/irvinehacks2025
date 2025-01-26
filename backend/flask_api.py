@@ -26,15 +26,19 @@ def get_username(username): #flask automatically calls this when a user makes an
 	try:
 		# username captured by flask: jsonify({"username": username})
 		if str(username) == 'x':
+			#pdrint("HELLO")
 			with open("mutual_followers.json", "r") as f:
 				data = json.load(f) 
-			return {'data': jsonify(data)}, 200
+			return jsonify(data), 200
 		all_followers = follower_processing.get_followers(str(username))
-		return {'data':jsonify(all_followers)}, 200
+		return jsonify(all_followers), 200
 	except Exception as ex:
-		return {"data":jsonify({"Error": str(ex)})}, 400
+		#print(ex)
+		return jsonify({"Error": str(ex)}), 400
 	
 # print(get_username(Client()))
 
 if __name__ == '__main__':
+	
 	app.run(debug=True)
+	
