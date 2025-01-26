@@ -254,7 +254,7 @@ def first_time_login_user():
 
 if __name__ == '__main__':
     a = CentralAccount()
-    #a.login_user()
+    a.login_user()
     #new_mutuals = {"jessica": ["steven"]}
     #a.add_mutuals(a.get_mutuals(new_mutuals))
 
