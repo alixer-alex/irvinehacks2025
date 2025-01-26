@@ -6,7 +6,7 @@ from pathlib import Path
 import json
 
 
-USERNAME = "steveyivicious"
+USERNAME = "irvinehacks2025_1"
 PASSWORD = "1028571DV"
 """
 Remember: A connection between nodes is only made when people follow each other
@@ -120,6 +120,7 @@ class CentralAccount:
         #write it back to the file
         with all_flwrs_path.open("w") as outfile:
             json.dump(parsed_old_users_and_flwrs, outfile)
+            outfile.flush()
 
 
     def get_mutuals(self, new_user: dict):
@@ -203,6 +204,7 @@ class CentralAccount:
         #write it back into the file
         with mutual_path.open("w") as outfile:
             json.dump(parsed_old_mutual_flwrs, outfile)
+            outfile.flush()
 
 
     def add_mutuals(self, new_mutuals: dict):
@@ -241,6 +243,7 @@ class CentralAccount:
         #write it back into the file
         with mutual_path.open("w") as outfile:
             json.dump(parsed_old_mutual_flwrs, outfile)
+            outfile.flush()
 
 
 def startup():
@@ -261,7 +264,9 @@ def first_time_login_user():
 
 if __name__ == '__main__':
     a = startup()
-    print(a.get_followers("steveyivicious"))
+    b = a.get_followers("steveyivicious")
+    print(b)
+    a.update_all_followers(b)
 
     #new_mutuals = {"jessica": ["steven"]}
     #print(a.get_mutuals(new_mutuals))
