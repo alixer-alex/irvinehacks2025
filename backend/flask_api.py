@@ -7,9 +7,11 @@ from instagrapi import Client
 import inspect
 from username_processing import follower_processing
 
+
+
 app = Flask(__name__)
 CORS(app)
-
+master = follower_processing.startup()
 # @app.route('/api/username?')
 # def get_current_time():
 #     return {'time': time.time()}
@@ -23,18 +25,17 @@ def get_username(username): #flask automatically calls this when a user makes an
 	# gives one username at a time
 	
 
-	try:
+	#try:
 		# username captured by flask: jsonify({"username": username})
 		if str(username) == 'x':
 			#pdrint("HELLO")
 			with open("mutual_followers.json", "r") as f:
 				data = json.load(f) 
 			return jsonify(data), 200
-		all_followers = follower_processing.get_followers(str(username))
+		all_followers = master.get_followers(str(username))
 		return jsonify(all_followers), 200
-	except Exception as ex:
-		#print(ex)
-		return jsonify({"Error": str(ex)}), 400
+	#except Exception as ex:
+		#return jsonify({"Error": str(ex)}), 400
 	
 # print(get_username(Client()))
 
