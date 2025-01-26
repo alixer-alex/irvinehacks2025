@@ -141,7 +141,7 @@ class CentralAccount:
 
     def update_mutuals(self, new_mutuals: dict):
         """
-        Writes in the mutual followers of a new user.
+        Writes in the mutual followers of a new user into mutual_followers.json
 
         {
         "steven":
@@ -150,9 +150,25 @@ class CentralAccount:
             ["steven"],
         "jessica":
             ["steven"]}
+
+        Args:
+            new_mutuals: A dictionary of the format {"new-user-username" : [mutualflwr1, mutualflwr2]}
+        Returns:
+            void
         """
-        pass
+        #get the current mutual_followers dictionary from mutual_followers.json
+        with open("mutual_followers.json", "r") as infile:
+            old_mutual_flwrs = infile.read()
         
+        #turn the json string into a dictionary
+        parsed_old_mutual_flwrs = json.loads(old_mutual_flwrs)
+        #update the dictionary
+        parsed_old_mutual_flwrs.update(new_mutuals)
+
+        #write it back into the file
+        with open("mutual_followers.json", "w") as outfile:
+            json.dump(parsed_old_mutual_flwrs, outfile)
+
 
 
 ###RUN EACH TIME YOU PULL FROM GITHUB###
@@ -164,9 +180,6 @@ def first_time_login_user():
 
 
 if __name__ == '__main__':
-    c = CentralAccount()
-    c.login_user()
-    print(c.get_followers("fillthy_franks_nemesis")) #steveyivicious
     #a = CentralAccount()
     #a.login_user()
     #print(inspect.signature(a.central_account.user_id_from_username))
@@ -174,7 +187,11 @@ if __name__ == '__main__':
     #print(a.central_account.user_followers("70684503354"))
 
     a = CentralAccount()
-    a.login_user()
+    #a.login_user()
+    new_mutuals = {"test": ["demo1","demo2"]}
+    a.update_mutuals(new_mutuals)
     #print(inspect.signature(a.central_account.user_id_from_username))
     #print(a.central_account.user_info_by_username(USERNAME))
-    print(a.central_account.user_followers("13586646940"))
+    #print(a.central_account.user_followers("13586646940"))
+    
+    
