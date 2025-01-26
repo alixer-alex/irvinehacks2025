@@ -87,7 +87,7 @@ class CentralAccount:
             A dictionary that is of the format: {username_from_arg : [follower1name, follower2name]}
         """
         # get dictionary (key: user id, value: UserShort dict w username, etc.)
-        user_id = self.central_account.user_info_by_username(username).pk
+        user_id = self.central_account.user_info_by_username_v1(username).pk
         dictt = self.central_account.user_followers(user_id)
         result = {username: []}
         for short in dictt.values():
@@ -260,11 +260,9 @@ def first_time_login_user():
 
 
 if __name__ == '__main__':
-    pass
-    #a = CentralAccount()
-    #print(a.get_followers("steveyivicious")) #DOESN'T WORK AND CAUSES EXCEPTIONS
-    #a.login_user()
-    
+    a = startup()
+    print(a.get_followers("steveyivicious"))
+
     #new_mutuals = {"jessica": ["steven"]}
     #print(a.get_mutuals(new_mutuals))
 
