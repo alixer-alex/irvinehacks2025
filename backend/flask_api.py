@@ -33,6 +33,8 @@ def get_username(username): #flask automatically calls this when a user makes an
 				data = json.load(f) 
 			return jsonify(data), 200
 		all_followers = master.get_followers(str(username))
+		print(all_followers)
+		master.update_mutuals(all_followers)
 		return jsonify(all_followers), 200
 	#except Exception as ex:
 		#return jsonify({"Error": str(ex)}), 400
