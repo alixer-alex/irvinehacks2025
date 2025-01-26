@@ -196,10 +196,12 @@ class CentralAccount:
             parsed_old_mutual_flwrs = json.loads(old_mutual_flwrs)
 
         #update the mutuals list of the username
+        #if the username is not in the parsed old mutual followers keys
         if (username not in parsed_old_mutual_flwrs.keys()):
             parsed_old_mutual_flwrs[username] = new_mutuals
         else:
-            parsed_old_mutual_flwrs[username] += new_mutuals
+            #all this set math is done to prevent duplicate follower names in the follower's list
+            parsed_old_mutual_flwrs[username] = list(frozenset().union(*[frozenset(parsed_old_mutual_flwrs[username]), (frozenset(new_mutuals))]))
 
         #write it back into the file
         with mutual_path.open("w") as outfile:
@@ -270,11 +272,9 @@ def first_time_login_user():
 
 if __name__ == '__main__':
     a = startup()
-    b = a.get_followers("steveyivicious")
-    print(b)
-    a.update_all_followers(b)
-    c = a.get_mutuals(b)
-    a.add_mutuals(c)
+    #print(list(frozenset().union(*[frozenset(["a", "b"]), (frozenset(["c", "b"]))])))
+    a.update_mutuals("steven", ["alex", "jessica"])
+    #main_process_username("steveyivicious", a)
 
     #new_mutuals = {"jessica": ["steven"]}
     #print(a.get_mutuals(new_mutuals))
