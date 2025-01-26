@@ -28,7 +28,7 @@ def get_username(username): #flask automatically calls this when a user makes an
 	# gives one username at a time
 	
 
-	#try:
+	try:
 		# username captured by flask: jsonify({"username": username})
 		if str(username) == 'x':
 			#pdrint("HELLO")
@@ -39,8 +39,10 @@ def get_username(username): #flask automatically calls this when a user makes an
 		with open("mutual_followers.json", "r") as f:
 				data = json.load(f) 
 		return jsonify(data), 200
-	#except Exception as ex:
-		#return jsonify({"Error": str(ex)}), 400
+	except Exception as ex:
+		with open("mutual_followers.json", "r") as f:
+				data = json.load(f) 
+		return jsonify(data), 400
 	
 # print(get_username(Client()))
 

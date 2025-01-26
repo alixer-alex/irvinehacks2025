@@ -6,7 +6,7 @@ from pathlib import Path
 import json
 
 
-USERNAME = "irvinehacks2025_1"
+USERNAME = "fillthy_franks_nemesis"
 PASSWORD = "1028571DV"
 """
 Remember: A connection between nodes is only made when people follow each other
