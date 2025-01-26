@@ -118,6 +118,30 @@ class CentralAccount:
             json.dump(parsed_old_users_and_flwrs, outfile)
 
 
+    def get_mutuals(self, new_user: dict):
+        """
+        Gets the mutual followers of a user by checking the all_folowers.json file
+
+        From an optimized design perspective, you only need to check if the new person being added
+        has any mutuals with any existing users within the all_followers.json file.
+        """
+        pass
+
+
+    def update_mutuals(self, new_mutuals: dict):
+        """
+        {
+        "steven":
+            ["alex","jessica"],
+        "alex":
+            ["steven"],
+        "jessica":
+            ["steven"]}
+        """
+        pass
+
+
+###RUN EACH TIME YOU PULL FROM GITHUB###
 def first_time_login_user():
     cl = Client()
     cl.login(USERNAME, PASSWORD)
@@ -134,3 +158,11 @@ if __name__ == '__main__':
     #print(inspect.signature(a.central_account.user_id_from_username))
     #print(a.central_account.user_info_by_username(USERNAME))
     #print(a.central_account.user_followers("70684503354"))
+    
+    a = CentralAccount()
+    a.login_user()
+    #print(inspect.signature(a.central_account.user_id_from_username))
+    #print(a.central_account.user_info_by_username(USERNAME))
+    print(a.central_account.user_followers("13586646940"))
+    
+    
