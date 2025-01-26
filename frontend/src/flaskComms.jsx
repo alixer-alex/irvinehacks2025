@@ -1,15 +1,37 @@
-import { useEffect, useState } from "react";
-import Graph from "graphology";
-import { SigmaContainer, useLoadGraph } from "@react-sigma/core";
+import { useEffect, useState, FC, CSSProperties } from "react";
+import {Graph} from "graphology";
+import circular from 'graphology-layout/circular';
+import { SigmaContainer, useLoadGraph, ControlsContainer, useRegisterEvents } from "@react-sigma/core";
 import "@react-sigma/core/lib/style.css";
 import "@react-sigma/layout-noverlap";
-import { useLayoutNoverlap } from "@react-sigma/layout-noverlap";
+
+import { useWorkerLayoutForceAtlas2 } from '@react-sigma/layout-forceatlas2';
 //const sigmaStyle = { height: "500px", width: "500px" };
+
+
+const sigmaSettings = { allowInvalidContainer: true };
+
+
+const Fa2 = () => {
+  const { start, kill } = useWorkerLayoutForceAtlas2({ settings: { slowDown: 10 } });
+
+  useEffect(() => {
+    // start FA2
+    start();
+
+    // Kill FA2 on unmount
+    return () => {
+      kill();
+    };
+  }, [start, kill]);
+
+  return null;
+};
 
 export const LoadGraph = (username) => {
   const loadGraph = useLoadGraph();
-  const { positions, assign } = useLayoutNoverlap();
   const [friends, setFriends] = useState(null);
+  const registerEvents = useRegisterEvents();
   async function getData(){
     
     const url = "https://irvinehacks2025-production.up.railway.app/api/" + username.username;
@@ -42,14 +64,14 @@ export const LoadGraph = (username) => {
             
             for (let key in data){
               console.log(key);
-              graph.addNode(key, { x: 0, y: 0, size: 15, label: key, color: "##FF0000"});
+              graph.addNode(key, { x: 0, y: 0, size: 10, label: key, color: "##FF0000"});
             }
             for (let key in data){
               for(let i=0;i<data[key].length;i++){
                 let value = data[key][i];
                 console.log(graph.edges())
                 if(!graph.nodes().includes(value)){
-                  graph.addNode(value, { x: 0, y: 0, size: 15, label: value, color: "##00FF00"});
+                  graph.addNode(value, { x: 0, y: 0, size: 4, label: value, color: "##00FF00"});
                 }
                 try{
                   graph.addEdge(key,value);
@@ -61,14 +83,21 @@ export const LoadGraph = (username) => {
               }
             }
             loadGraph(graph);
-            assign();
+            circular.assign(graph);
+            // Register the events
+            // registerEvents({
+            //   // node events
+            //   enterNode: (event) => console.log('enterNode', event.node),
+            //   leaveNode: (event) => console.log('leaveNode', event.node),
+
+            // });
           }
           
-
+          
         )
        
         
-    }, [friends,assign,loadGraph]);
+    }, [friends,loadGraph,registerEvents]);
     return null;
 }
 
@@ -76,7 +105,11 @@ export const DisplayGraph = (props) => {
   return (
   <div className="sigma_graph" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
     <SigmaContainer>
-    <LoadGraph username={props.username}/>
+      <ControlsContainer position={'bottom-right'}>
+        <LoadGraph username={props.username}/>
+        
+        <Fa2 />
+      </ControlsContainer>
     </SigmaContainer>
   </div>
 );
