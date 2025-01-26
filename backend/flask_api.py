@@ -32,7 +32,7 @@ def get_username(username): #flask automatically calls this when a user makes an
 			with open("mutual_followers.json", "r") as f:
 				data = json.load(f) 
 			return jsonify(data), 200
-		follower_processing.main_process_username(master, str(username))
+		follower_processing.main_process_username(str(username),master)
 		with open("mutual_followers.json", "r") as f:
 				data = json.load(f) 
 		return jsonify(data), 200

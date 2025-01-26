@@ -55,7 +55,7 @@ function Page () {
       <label>{label}</label>
       <input
         type="text"
-        class="modern-textbox"
+        className="modern-textbox"
         onKeyDown={handleKeyDown} // Listen for key presses
       />
     </div>
