@@ -20,6 +20,14 @@ def get_username(username): #flask automatically calls this when a user makes an
 	# gives one username at a time
 	try:
 		# username captured by flask: jsonify({"username": username})
+		if len(str(username)) == 0:
+			return {
+					"steven":
+						["alex","jessica"],
+					"alex":
+						["steven"],
+					"jessica":
+						["steven"]}
 		all_followers = follower_processing.get_followers(str(username))
 		return jsonify(all_followers), 200
 	except Exception as ex:
