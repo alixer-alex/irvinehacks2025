@@ -20,8 +20,8 @@ def home():
 	return "<p> Hello! </p>"	
 
 #when someone visits http://localhost:5173/api/<username>, get_username is called
-#@app.route('/api/<username>', methods=['GET'])
-#def get_username(username): #flask automatically calls this when a user makes an HTTP request
+@app.route('/api/<username>', methods=['GET'])
+def get_username(username): #flask automatically calls this when a user makes an HTTP request
 	#"take the username from the info in the url (../api?)"
     #just the usernames of 1 username, process it and send over to follower_processing
     # return a tuple of a blank dictionary, 200 (success code)
