@@ -5,13 +5,75 @@
   text-align: center;
 } */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+body{
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  gap: 30px;
+} */
+
 .main{
   padding-top: 15rem;
   align-items: center;
   text-align: center;
   background: #fff;
 }
-.input{
+.text-label{
+  font-size: 52px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+.modern-textbox{
+  position: relative;
+  width: 100%;               /* Full width of the parent container */
+  max-width: 400px;          /* Optional: Set a maximum width */
+  padding: 10px 15px;        /* Add spacing inside the textbox */
+  font-size: 16px;           /* Adjust font size */
+  font-family: 'Roboto', sans-serif; /* Use a clean, modern font */
+  border: 1px solid #ccc;    /* Light border for a modern look */
+  border-radius: 8px;        /* Rounded corners */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+  outline: none;             /* Remove the blue outline on focus */
+  transition: all 0.3s ease; /* Smooth transition for hover/focus effects */
+}
+.modern-textbox::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.modern-textbox:hover {
+  border-color: #007bff;
+}
+
+/* .text-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #282c34;
+} */
+
+.text-label {
   text-align: center;
+  justify-content: center;
   padding: 0.5rem;
+  font-family: "Roboto", sans-serif;
+}
+
+.sigma_graph{
+  position: static;
+  height: 500px;
+  width: 500px;
+  border-style: solid;
+  border-color: #000000;
 }

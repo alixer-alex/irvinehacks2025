@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 .navbar{
   width: 100%;
   display: flex;
@@ -17,6 +19,7 @@ ul{
   flex: 1;
   list-style: none;
   text-align: left;
+  font-family: "Roboto", sans-serif;
 }
 
 ul li{
@@ -24,6 +27,7 @@ ul li{
   margin: 10px 20px;
   font-size: 18px;
   cursor: pointer;
+  font-family: "Roboto", sans-serif;
 }
 .toggle-icon {
   width: 50px;
@@ -36,6 +40,7 @@ ul li{
   background: #242424;
   padding: 10px 20px;
   border-radius: 50px;
+  font-family: "Roboto", sans-serif;
 }
 .search-box input{
   padding: 6px;
@@ -45,6 +50,7 @@ ul li{
   color: #fff;
   font-size: 18px;
   max-width: 200px;
+  font-family: "Roboto", sans-serif;
 }
 .search-box input::placeholder{
   color: #fff;
