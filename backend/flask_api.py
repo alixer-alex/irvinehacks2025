@@ -21,15 +21,11 @@ def get_username(username): #flask automatically calls this when a user makes an
 	try:
 		# username captured by flask: jsonify({"username": username})
 		if len(str(username)) == 0:
-			return {
-					"steven":
-						["alex","jessica"],
-					"alex":
-						["steven"],
-					"jessica":
-						["steven"]}
+			with open("mutual_followers.json", "r") as f:
+				data = json.load(f) 
+			return {"data":data}, 200
 		all_followers = follower_processing.get_followers(str(username))
-		return jsonify(all_followers), 200
+		return {"data":jsonify(all_followers)}, 200
 	except Exception as ex:
 		return jsonify({"Error": str(ex)}), 400
 	

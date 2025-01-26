@@ -22,9 +22,12 @@ export const LoadGraph = (username) => {
         // for(let key in data){
         //   graph.addNode(key, { x: 0, y: 0, size: 15, label: key, color: "#FA4F40" });
         // }
+
+        //
         graph.addNode("A", { x: 0, y: 0, size: 15, label: "A", color: "#FA4F40" });
         graph.addNode("B", { x: 0, y: 1, size: 15, label: "B", color: "blue" });
         graph.addNode("C", { x: 1, y: 0, size: 15, label: "C", color: "green" });
+        
         graph.addEdge("A","C")
         graph.addEdge("B","C")
         loadGraph(graph);
