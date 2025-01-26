@@ -124,12 +124,19 @@ class CentralAccount:
 
         From an optimized design perspective, you only need to check if the new person being added
         has any mutuals with any existing users within the all_followers.json file.
+
+        Args:
+            new_user: A dictionary of the format {"insert-user's-username-here" : [follower1, follower2]}
+        Returns:
+            A dictionary of the format {"user's-username-here" : [mutualfollower1, mutualfollower2]}
         """
         pass
 
 
     def update_mutuals(self, new_mutuals: dict):
         """
+        Writes in the mutual followers of a new user.
+
         {
         "steven":
             ["alex","jessica"],
@@ -139,6 +146,7 @@ class CentralAccount:
             ["steven"]}
         """
         pass
+        
 
 
 ###RUN EACH TIME YOU PULL FROM GITHUB###
