@@ -14,6 +14,7 @@ export const LoadGraph = (username) => {
     const { positions, assign } = useLayoutNoverlap();
     const [friends, setFriends] = useState(null);
     async function getData(){
+      
       const url = "http://localhost:5000/api/" + username.username;
       try {
         const response = await fetch(url);
@@ -48,7 +49,12 @@ export const LoadGraph = (username) => {
                 if(!graph.nodes().includes(value)){
                   graph.addNode(value, { x: 0, y: 0, size: 15, label: value, color: "##00FF00"});
                 }
-                graph.addEdge(key,value);
+                try{
+                  graph.addEdge(key,value);
+                }
+                catch{
+
+                }
                 console.log(graph.edges())
               }
             }
