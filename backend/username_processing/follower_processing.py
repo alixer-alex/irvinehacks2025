@@ -87,7 +87,8 @@ class CentralAccount:
             A dictionary that is of the format: {username_from_arg : [follower1name, follower2name]}
         """
         # get dictionary (key: user id, value: UserShort dict w username, etc.)
-        dictt = self.central_account.user_followers(user_id=self.central_account.user_id)
+        user_id = self.central_account.user_info_by_username(username).pk #need to parse
+        dictt = self.central_account.user_followers(user_id)
         result = {username: []}
         for short in dictt.values():
            result[username].append(short.username)
@@ -117,24 +118,19 @@ class CentralAccount:
             json.dump(parsed_old_users_and_flwrs, outfile)
 
 
-    
-
-
-
 def first_time_login_user():
     cl = Client()
     cl.login(USERNAME, PASSWORD)
     cl.dump_settings("session.json")
     return cl
 
+
 if __name__ == '__main__':
     c = CentralAccount()
     c.login_user()
-    print(c.get_followers("steveyivicious"))
+    print(c.get_followers("fillthy_franks_nemesis")) #steveyivicious
     #a = CentralAccount()
     #a.login_user()
     #print(inspect.signature(a.central_account.user_id_from_username))
     #print(a.central_account.user_info_by_username(USERNAME))
     #print(a.central_account.user_followers("70684503354"))
-    
-    
