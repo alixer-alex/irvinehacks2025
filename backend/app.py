@@ -9,7 +9,7 @@ from username_processing import follower_processing
 
 
 
-app = Flask(__name__, static_folder='./dist',static_url_path='/')
+app = Flask(__name__, static_folder='./template',static_url_path='/')
 CORS(app)
 master = follower_processing.startup()
 # @app.route('/api/username?')
@@ -17,7 +17,7 @@ master = follower_processing.startup()
 #     return {'time': time.time()}
 @app.route('/')
 def home():
-	return render_template('/dist/index.html')	
+	return render_template('/template/index.html')	
 
 #when someone visits http://localhost:5173/api/<username>, get_username is called
 @app.route('/api/<username>', methods=['GET'])
@@ -45,6 +45,5 @@ def get_username(username): #flask automatically calls this when a user makes an
 # print(get_username(Client()))
 
 if __name__ == '__main__':
-	
-	app.run(debug=True)
+	app.run()
 	
