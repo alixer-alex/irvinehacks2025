@@ -125,6 +125,10 @@ class CentralAccount:
         From an optimized design perspective, you only need to check if the new person being added
         has any mutuals with any existing users within the all_followers.json file.
 
+        For each user/key in all_followers.json, you only have to check if the new-user is in that
+        person's follower list. DO NOT check the follower lists of each follower of each user in
+        all_followers.
+
         Args:
             new_user: A dictionary of the format {"insert-user's-username-here" : [follower1, follower2]}
         Returns:
