@@ -28,6 +28,7 @@ function Page () {
     <main className="main">
       <section>
         <h1 className="text-box">Enter Instagram Username: </h1>
+        <User_Input/>
         <DisplayGraph username={props.username} />
       </section>
     </main>
@@ -63,12 +64,9 @@ function Page () {
       <Navbar theme={theme} setTheme={setTheme}/>
     <div className="flex flex-col min-h-screen">
       <MainContent username = {username}/>
-      <User_Input/>
       <div className="flex flex-1">
-        {/* <Sidebar /> */}
       
       </div>
-      {/* <Footer /> */}
     </div>
     </div>
   )
