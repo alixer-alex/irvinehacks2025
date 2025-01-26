@@ -34,14 +34,7 @@ ul li{
   cursor: pointer;
   margin-left: 40px;
 }
-.search-box {
-  display: flex;
-  align-items: center;
-  background: #242424;
-  padding: 10px 20px;
-  border-radius: 50px;
-  font-family: "Roboto", sans-serif;
-}
+
 .search-box input{
   padding: 6px;
   background: transparent;

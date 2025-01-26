@@ -27,6 +27,13 @@ body{
   align-items: center;
   text-align: center;
   background: #fff;
+  transition: 0.5s;
+}
+.main.dark{
+  padding-top: 5rem;
+  align-items: center;
+  text-align: center;
+  background: #222;
 }
 .text-label{
   font-size: 52px;

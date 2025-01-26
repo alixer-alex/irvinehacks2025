@@ -19,13 +19,9 @@ function Page () {
     localStorage.setItem('current_theme', theme);
     
   },[theme, username])
-  // const Header = () => <header className="p-4 bg-blue-500 text-white">Header</header>;
-
-// const Sidebar = () => (
-//   <aside className="p-4 bg-gray-200 w-1/4">Sidebar</aside>
-// );
 
   const MainContent = (props) => (
+//    <main className="main">
     <main className="main">
       <section>
         <h1 className="text-label">Enter Instagram Username: </h1>
@@ -62,7 +58,7 @@ function Page () {
   )
 };
   return (
-    <div className={`container ${theme}`}>
+    <div className="container">
       <Navbar theme={theme} setTheme={setTheme}/>
     <div className="flex flex-col min-h-screen">
       <MainContent username = {username}/>

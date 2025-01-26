@@ -15,16 +15,10 @@ const Navbar = ({theme, setTheme}) => {
     <div className='navbar'>
       <img src={""} alt="" className=''/>
 
-
       <ul>
         <li>Home</li>
         <li>About</li>
       </ul>
-
-      <div className="search-box">
-        <input type="text" placeholder='Search'/>
-        <img src={theme == 'light' ? search_icon_light : search_icon_dark} alt=""/>
-      </div>
 
       <img onClick={()=>toggle_mode()} src={theme == "light" ? toggle_light : toggle_dark} alt="" className='toggle-icon'/>
     </div>
