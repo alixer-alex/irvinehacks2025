@@ -34,7 +34,7 @@ export const LoadGraph = (username) => {
   const registerEvents = useRegisterEvents();
   async function getData(){
     
-    const url = "https://irvinehacks2025-production.up.railway.app/" + username.username;
+    const url = "http://localhost:5000/api/" + username.username;
     try {
       const response = await fetch(url);
       if (!response.ok) {
