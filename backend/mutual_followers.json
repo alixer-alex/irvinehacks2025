@@ -1,7 +1,1 @@
-{
-    "steven":
-        ["alex","jessica"],
-    "alex":
-        ["steven"],
-    "jessica":
-        ["steven"]}
+{"steven": ["alex", "jessica"], "alex": ["steven"], "jessica": ["steven"], "test": ["demo1", "demo2"]}
