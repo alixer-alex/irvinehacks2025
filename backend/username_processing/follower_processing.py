@@ -134,7 +134,9 @@ class CentralAccount:
         Returns:
             A dictionary of the format {"user's-username-here" : [mutualfollower1, mutualfollower2]}
         """
-        pass
+        mutuals = {}
+        
+
 
 
     def update_mutuals(self, new_mutuals: dict):
