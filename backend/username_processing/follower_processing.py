@@ -87,7 +87,7 @@ class CentralAccount:
             A dictionary that is of the format: {username_from_arg : [follower1name, follower2name]}
         """
         # get dictionary (key: user id, value: UserShort dict w username, etc.)
-        user_id = self.central_account.user_info_by_username(username).pk #need to parse
+        user_id = self.central_account.user_info_by_username(username).pk
         dictt = self.central_account.user_followers(user_id)
         result = {username: []}
         for short in dictt.values():
@@ -109,7 +109,10 @@ class CentralAccount:
             old_users_and_flwrs = infile.read() #returns a string
 
         #parse the old data
-        parsed_old_users_and_flwrs = json.loads(old_users_and_flwrs)
+        if (old_users_and_flwrs == ""):
+            parsed_old_users_and_flwrs = {}
+        else:
+            parsed_old_users_and_flwrs = json.loads(old_users_and_flwrs)
 
         #append the new data to the old
         parsed_old_users_and_flwrs.update(user_with_followers)
@@ -142,16 +145,18 @@ class CentralAccount:
         mutuals = {new_user_username : []}
 
         #get the all_followers string
-        with open('all_followers.json', 'r') as infile:
+        with Path("all_followers.json").open('r') as infile:
             contents = infile.read()
         #convert the string into a dictionary
-        followers = json.loads(contents)
+        if (contents == ""):
+            followers = {}
+        else:
+            followers = json.loads(contents)
 
         #for each user
         for username, follower_list in followers.items():
             #if the new_user is in the user's follower list, and the user is in the new_user's flwr list
             if (new_user_username in follower_list) & (username in new_user[new_user_username]):
-                #YOU'RE GOING TO HAVE TO UPDATE BOTH THE USERNAME AND THE NEW_USER_NAME'S MUTUALS
                 #knowing that this is the one and only time the person represented by username will
                 #have to update their mutual follower list during this function...
 
@@ -166,6 +171,9 @@ class CentralAccount:
 
     def update_mutuals(self, username: str, new_mutuals: list):
         """
+        HELPER FUNCTION
+        ASSUMES: username is already a key in all_followers.json
+        
         Updates the mutual followers of a user in mutual_followers.json
 
         Args:
@@ -181,9 +189,16 @@ class CentralAccount:
             old_mutual_flwrs = infile.read()
         
         #turn the json string into a dictionary
-        parsed_old_mutual_flwrs = json.loads(old_mutual_flwrs)
+        if (old_mutual_flwrs == ""):
+            parsed_old_mutual_flwrs = {}
+        else:
+            parsed_old_mutual_flwrs = json.loads(old_mutual_flwrs)
+
         #update the mutuals list of the username
-        parsed_old_mutual_flwrs[username] += new_mutuals
+        if (username not in parsed_old_mutual_flwrs.keys()):
+            parsed_old_mutual_flwrs[username] = new_mutuals
+        else:
+            parsed_old_mutual_flwrs[username] += new_mutuals
 
         #write it back into the file
         with mutual_path.open("w") as outfile:
@@ -215,7 +230,11 @@ class CentralAccount:
             old_mutual_flwrs = infile.read()
         
         #turn the json string into a dictionary
-        parsed_old_mutual_flwrs = json.loads(old_mutual_flwrs)
+        if (old_mutual_flwrs == ""):
+            parsed_old_mutual_flwrs = {}
+        else:
+            parsed_old_mutual_flwrs = json.loads(old_mutual_flwrs)
+
         #update the dictionary
         parsed_old_mutual_flwrs.update(new_mutuals)
 
@@ -225,7 +244,7 @@ class CentralAccount:
 
 
 
-###RUN EACH TIME YOU PULL FROM GITHUB###
+###RUN EACH TIME YOU PULL FROM GITHUB### TODO: FIGURE OUT IF THIS WILL WORK WHEN YOU PUBLISH THE PROJECT
 def first_time_login_user():
     cl = Client()
     cl.login(USERNAME, PASSWORD)
@@ -234,19 +253,13 @@ def first_time_login_user():
 
 
 if __name__ == '__main__':
-    #a = CentralAccount()
-    #a.login_user()
-    #print(inspect.signature(a.central_account.user_id_from_username))
-    #print(a.central_account.user_info_by_username(USERNAME))
-    #print(a.central_account.user_followers("70684503354"))
-
     a = CentralAccount()
     #a.login_user()
-    new_mutuals = {"jessica": ["steven"]}
-    a.add_mutuals(a.get_mutuals(new_mutuals))
-    #print(inspect.signature(a.central_account.user_id_from_username))
-    #print(a.central_account.user_info_by_username(USERNAME))
-    #print(a.central_account.user_followers("13586646940"))
+    #new_mutuals = {"jessica": ["steven"]}
+    #a.add_mutuals(a.get_mutuals(new_mutuals))
 
-    print(a.get_mutuals(a.get_followers("steveyivicious")))
-    
+    # with Path("C:\\Programming\\IrvineHacks2025\\irvinehacks2025\\backend\\username_processing\\empty.json").open("r") as infile:
+    #     empty_str = infile.read()
+    # a.add_mutuals({"a" : ["b", "c"]})
+    #print(a.central_account.user_followers(a.central_account.user_id)
+
