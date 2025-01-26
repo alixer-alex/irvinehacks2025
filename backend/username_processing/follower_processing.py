@@ -86,10 +86,9 @@ class CentralAccount:
         Returns:
             A dictionary that is of the format: {username_from_arg : [follower1name, follower2name]}
         """
-        #
-        user_id = self.central_account.user_info_by_username(username) #need to parse
+        # get dictionary (key: user id, value: UserShort dict w username, etc.)
+        user_id = self.central_account.user_info_by_username(username).pk #need to parse
         dictt = self.central_account.user_followers(user_id)
-        ###TODO: USER_ID ABOVE IS USING THE ID OF THE CENTRAL ACCOUNT
         result = {username: []}
         for short in dictt.values():
            result[username].append(short.username)
@@ -125,12 +124,19 @@ class CentralAccount:
 
         From an optimized design perspective, you only need to check if the new person being added
         has any mutuals with any existing users within the all_followers.json file.
+
+        Args:
+            new_user: A dictionary of the format {"insert-user's-username-here" : [follower1, follower2]}
+        Returns:
+            A dictionary of the format {"user's-username-here" : [mutualfollower1, mutualfollower2]}
         """
         pass
 
 
     def update_mutuals(self, new_mutuals: dict):
         """
+        Writes in the mutual followers of a new user.
+
         {
         "steven":
             ["alex","jessica"],
@@ -140,6 +146,7 @@ class CentralAccount:
             ["steven"]}
         """
         pass
+        
 
 
 ###RUN EACH TIME YOU PULL FROM GITHUB###
@@ -149,11 +156,19 @@ def first_time_login_user():
     cl.dump_settings("session.json")
     return cl
 
+
 if __name__ == '__main__':
+    c = CentralAccount()
+    c.login_user()
+    print(c.get_followers("fillthy_franks_nemesis")) #steveyivicious
+    #a = CentralAccount()
+    #a.login_user()
+    #print(inspect.signature(a.central_account.user_id_from_username))
+    #print(a.central_account.user_info_by_username(USERNAME))
+    #print(a.central_account.user_followers("70684503354"))
+
     a = CentralAccount()
     a.login_user()
     #print(inspect.signature(a.central_account.user_id_from_username))
     #print(a.central_account.user_info_by_username(USERNAME))
     print(a.central_account.user_followers("13586646940"))
-    
-    
