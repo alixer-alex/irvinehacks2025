@@ -10,14 +10,15 @@ import Navbar from './Components/Navbar/Navbar.jsx'
 
 
 function Page () {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("x");
   //when writing the get username form, pass it as a return value into setUsername
   const current_theme = localStorage.getItem('current_theme');
   const [theme, setTheme] = useState(current_theme ? current_theme : 'light');
 
   useEffect(()=>{
     localStorage.setItem('current_theme', theme);
-  },[theme])
+    
+  },[theme, username])
   // const Header = () => <header className="p-4 bg-blue-500 text-white">Header</header>;
 
 // const Sidebar = () => (

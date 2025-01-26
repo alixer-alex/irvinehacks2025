@@ -6,34 +6,60 @@ import "@react-sigma/layout-noverlap";
 import { useLayoutNoverlap } from "@react-sigma/layout-noverlap";
 const sigmaStyle = { height: "1080px", width: "1080px" };
 
+
+
 // Component that load the graph
 export const LoadGraph = (username) => {
     const loadGraph = useLoadGraph();
     const { positions, assign } = useLayoutNoverlap();
-    const [data, setData] = useState(null);
+    const [friends, setFriends] = useState(null);
+    async function getData(){
+      const url = "http://localhost:5000/api/" + username.username;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+    
+        const json = await response.json();
+        console.log(json);
+        return json;
+        
+      } catch (error) {
+        console.error(error.message);
+      }
+
+    }
     useEffect(() => {
         const graph = new Graph();
-        // console.log(username.username)
-        // fetch('/api/'+ username.username)
-        // .then(response => response.json())
-        // .then(data => setData(data))
-        // .catch(error => console.log(error))
-        
-        // for(let key in data){
-        //   graph.addNode(key, { x: 0, y: 0, size: 15, label: key, color: "#FA4F40" });
-        // }
+        let temp = null;
+        console.log(username.username)
+        getData().then(
+          data => {
+            console.log(data.data);
+            for (let key in data.data){
+              console.log(key);
+              graph.addNode(key, { x: 0, y: 0, size: 15, label: key, color: "##FF0000"});
+            }
+            for (let key in data.data){
+              for(let i=0;i<data.data[key].length;i++){
+                let value = data.data[key][i];
+                console.log(graph.nodes())
+                if(!graph.nodes().includes(value)){
+                  graph.addNode(value, { x: 0, y: 0, size: 15, label: value, color: "##00FF00"});
+                }
+                graph.addEdge(key,value);
+              }
+            }
+            loadGraph(graph);
+            assign();
+          }
+          
 
-        //
-        graph.addNode("A", { x: 0, y: 0, size: 15, label: "A", color: "#FA4F40" });
-        graph.addNode("B", { x: 0, y: 1, size: 15, label: "B", color: "blue" });
-        graph.addNode("C", { x: 1, y: 0, size: 15, label: "C", color: "green" });
+        )
+       
         
-        graph.addEdge("A","C")
-        graph.addEdge("B","C")
-        loadGraph(graph);
-        assign();
-        console.log(data);
-    }, [assign,loadGraph]);
+    }, [friends,assign,loadGraph]);
     return null;
 }
 
@@ -42,6 +68,7 @@ export const LoadGraph = (username) => {
 export const DisplayGraph = (props) => {
   return (
     <SigmaContainer style={sigmaStyle}>
+      {console.log(props.username + "AAA")}
       <LoadGraph username={props.username}/>
     </SigmaContainer>
   );
