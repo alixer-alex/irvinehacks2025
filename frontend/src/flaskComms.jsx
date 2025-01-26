@@ -12,7 +12,7 @@ export const LoadGraph = (username) => {
   const [friends, setFriends] = useState(null);
   async function getData(){
     
-    const url = "http://localhost:5000/api/" + username.username;
+    const url = "irvinehacks2025-production.up.railway.app/api/" + username.username;
     try {
       const response = await fetch(url);
       if (!response.ok) {
