@@ -7,7 +7,7 @@
 .container{
   width: 100vw;
   min-height: 100vh;
-  background: #ced8ff;
+  background: #ffffff;
   transition: 0.5s;
 }
 .container.dark{
