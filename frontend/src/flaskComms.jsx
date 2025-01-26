@@ -34,7 +34,7 @@ export const LoadGraph = (username) => {
   const registerEvents = useRegisterEvents();
   async function getData(){
     
-    const url = "https://irvinehacks2025-production.up.railway.app/api/" + username.username;
+    const url = "http://localhost:5000/api/" + username.username;
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -101,9 +101,9 @@ export const LoadGraph = (username) => {
     return null;
 }
 
-export const DisplayGraph = (props) => {
+export const DisplayGraph = (theme, props) => {
   return (
-  <div className="sigma_graph" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+  <div className={`sigma_graph${theme}`} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
     <SigmaContainer>
       <ControlsContainer position={'bottom-right'}>
         <LoadGraph username={props.username}/>
