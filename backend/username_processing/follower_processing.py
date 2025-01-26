@@ -6,7 +6,7 @@ from pathlib import Path
 import json
 
 
-USERNAME = "irvinehacks2025_1"
+USERNAME = "irvinehacks2025_4"
 PASSWORD = "1028571DV"
 """
 Remember: A connection between nodes is only made when people follow each other
@@ -273,7 +273,23 @@ def startup():
 
 
 def main_process_username(username: str, ctr_acc: CentralAccount):
-    flwrs_dict = ctr_acc.get_followers(username)
+    """
+    Assumes that, if a username is not in the keys of all_followers, then it is not in the keys of
+    mutual_followers either
+    """
+    #get the current all_followers in order to check if we already scraped thea ccount
+    with open("all_followers.json") as infile:
+        all_accounts = infile.read()
+    if all_accounts == "":
+        parsed_all_accounts = {}
+    else:
+        parsed_all_accounts = json.loads(all_accounts)
+    #check if we already scraped the account
+    if (username not in parsed_all_accounts.keys()):
+            flwrs_dict = ctr_acc.get_followers(username)
+    else:
+        flwrs_dict = {username: parsed_all_accounts[username]}
+    
     ctr_acc.update_all_followers(flwrs_dict)
     flwr_mutuals = ctr_acc.get_mutuals(flwrs_dict) #remember, this also updates the mutual follower lists of other accs
     ctr_acc.add_mutuals(flwr_mutuals)
@@ -289,18 +305,16 @@ def first_time_login_user():
 
 
 if __name__ == '__main__':
+    pass
+    #a = startup()
+    #main_process_username("filthy_franks_partner", a)
+
     # a = {"a" : ["b", "c"]}
     # a.update({"a" : ["b"]})
     # print(a)
-    a = startup()
-    b = {"jad_umb": ["natbagel", "frank.yeh808", "anshuxs", "therealaidanvara", "justin.siek", "maiiithy", "the_awesome_akam_khinda", "sushikirbz", "nguyenxjason", "pentium.girl", "thia.io", "neeraj_savd", "leen.ramesh", "mark.zshao", "dylandsd", "maria.wroblewska007", "daniel.in.motion", "stefany_ruan", "kim_ssangmin", "joseap.t", "aarushi_poo", "armanoid_creature", "g_ls07", "yum_my023", "hrishi.meh", "uci_oit", "novytsang", "koko_okrunch", "rizzyizzie_", "mister.shem", "sicazy", "uci_elp", "peter__ou", "notiwah", "hdola_ewy", "lucaschin_", "nick_vuong", "gabecpz_", "ayaka.nakamura_", "kswagger098", "ivvan._", "bon.nie.man", "kginac", "sicazhang", "leading2succeed_", "dqfuq", "eric.l30", "jasen5196", "anth.tm", "ji.wonh", "alixer_alex", "allegro.sostenuto", "furby.duck", "ssarah.yuan", "janicezhxng", "novy.tsang", "sara.uchida", "boomin.alex", "maximilian_fkonrad", "izel.sanchez", "asiantimo", "littlepeace2005", "yum_ni_023", "jamesu.park", "isabellayi111", "ranrannn_0307", "michael_ashfo", "te_evan", "jiwooplays2k", "akshira._", "coltjmcguire", "jenna._.peng", "kellyallexa", "efhta", "emilio_lim", "harrisxu_", "medhab3", "vajraaang", "vincent.liu1", "samsammy184", "howtobecomelakshgupta", "_katelynbellows", "crusadercrisp", "josephd13_", "elaineliu__", "sanjaysvelan", "mushmooshroom", "annishpattani04", "gabcel1ne", "babyyodz_z", "tofu_birdie", "matthewgraygublersbiggestfan", "em_mazuo", "samuel.wang12", "aishahid786", "lord_ingram", "davidwanggggggg", "realestthugsri", "kayeeeechen", "chloemmeyer", "adeeba.mohammed", "abhinavtiruveedhula", "halcyankeh", "poojadave22", "sai.my.guy", "sohajashwant", "justin_yang_148", "kristennnnnsss", "amrit.addanki", "henryliu8", "goofy_goomber", "soha_jashwant", "practice.with.wyatt", "jshinkart.aiart", "doubleaa02", "jiwoo.h.yung", "dsarthak_19", "shivaniarya_", "rishavs01", "joeyc_skt", "calamarho", "abhi.someswar", "brand_new.song", "ellla.li", "moreortess", "timtamotheus", "stevozeng", "elsa.joy", "jennyxun_", "5elina.he", "armaanchadha__", "highonjuice_", "harshith.sadhu", "rishikhott", "_lia_ah__", "rbeccalee", "guobropro", "trannguyen_225", "stirfryfood", "gautham.inq", "ianmbeamer", "kaushish.kebab", "ryanchennnnnn", "downisdown1", "choppsthicc", "koryoboi", "jjojoof", "joyce.liang0", "shwetananaaware", "danielxzhao", "crustalyang", "elleenie.kim", "ramenking333", "isabellliu", "luharok06", "_elisabeth.mathis_", "allisonn.kim", "a.kimchi_", "guava.ram", "greydanv", "qwertywiejxndb_742", "presidentsamlu", "numberlinksnumber1", "francis_li1", "ian_vo_7", "jakeshin9", "jongyunshin229", "bo.nguyxn", "russ_c4", "tiff.anyluong", "lqurq.l", "alexhshi", "abhiritdas", "hitstarana", "disar_ray_", "harshinisriniv", "theultrahdgamer", "_rohansrinivas_", "_kennethyao", "seter_pong", "sanjanaaap", "un.ecorn", "nicolexxuu", "maya.kookie97", "its.eugene", "mwathayu__k100", "matt22k_", "stegosaurus_in_highschool", "sahillalaniii", "rikiszstudio", "chanev_05", "ht_wuwu", "braandonalee", "diegojs2005", "13r4dy", "rachael.yna", "a.terry__", "gallardoalexis4", "jam_bakrin", "hongdou_taro", "marcus_goobie", "abhiritdas2", "wholesome_memes13", "duncantlynch", "superstorm202", "mixerstreamerscentral", "a.das_13", "thiccpapibreadloaf", "_________nayao", "prmdyaputra_77", "loneranger_808", "jack_g.j", "thespicyvariety", "shivaay22"]}
-    main_process_username("jad_umb", a)
-    with open("mutual_followers.json") as infile:
-        bruh = json.loads(infile.read())
-    print(len(bruh["jad_umb"]))
-    with open("all_followers.json") as infile:
-        moment = json.loads(infile.read())
-    print(len(b["jad_umb"]))
+    #a = startup()
+    #b = {"jad_umb": ["natbagel", "frank.yeh808", "anshuxs", "therealaidanvara", "justin.siek", "maiiithy", "the_awesome_akam_khinda", "sushikirbz", "nguyenxjason", "pentium.girl", "thia.io", "neeraj_savd", "leen.ramesh", "mark.zshao", "dylandsd", "maria.wroblewska007", "daniel.in.motion", "stefany_ruan", "kim_ssangmin", "joseap.t", "aarushi_poo", "armanoid_creature", "g_ls07", "yum_my023", "hrishi.meh", "uci_oit", "novytsang", "koko_okrunch", "rizzyizzie_", "mister.shem", "sicazy", "uci_elp", "peter__ou", "notiwah", "hdola_ewy", "lucaschin_", "nick_vuong", "gabecpz_", "ayaka.nakamura_", "kswagger098", "ivvan._", "bon.nie.man", "kginac", "sicazhang", "leading2succeed_", "dqfuq", "eric.l30", "jasen5196", "anth.tm", "ji.wonh", "alixer_alex", "allegro.sostenuto", "furby.duck", "ssarah.yuan", "janicezhxng", "novy.tsang", "sara.uchida", "boomin.alex", "maximilian_fkonrad", "izel.sanchez", "asiantimo", "littlepeace2005", "yum_ni_023", "jamesu.park", "isabellayi111", "ranrannn_0307", "michael_ashfo", "te_evan", "jiwooplays2k", "akshira._", "coltjmcguire", "jenna._.peng", "kellyallexa", "efhta", "emilio_lim", "harrisxu_", "medhab3", "vajraaang", "vincent.liu1", "samsammy184", "howtobecomelakshgupta", "_katelynbellows", "crusadercrisp", "josephd13_", "elaineliu__", "sanjaysvelan", "mushmooshroom", "annishpattani04", "gabcel1ne", "babyyodz_z", "tofu_birdie", "matthewgraygublersbiggestfan", "em_mazuo", "samuel.wang12", "aishahid786", "lord_ingram", "davidwanggggggg", "realestthugsri", "kayeeeechen", "chloemmeyer", "adeeba.mohammed", "abhinavtiruveedhula", "halcyankeh", "poojadave22", "sai.my.guy", "sohajashwant", "justin_yang_148", "kristennnnnsss", "amrit.addanki", "henryliu8", "goofy_goomber", "soha_jashwant", "practice.with.wyatt", "jshinkart.aiart", "doubleaa02", "jiwoo.h.yung", "dsarthak_19", "shivaniarya_", "rishavs01", "joeyc_skt", "calamarho", "abhi.someswar", "brand_new.song", "ellla.li", "moreortess", "timtamotheus", "stevozeng", "elsa.joy", "jennyxun_", "5elina.he", "armaanchadha__", "highonjuice_", "harshith.sadhu", "rishikhott", "_lia_ah__", "rbeccalee", "guobropro", "trannguyen_225", "stirfryfood", "gautham.inq", "ianmbeamer", "kaushish.kebab", "ryanchennnnnn", "downisdown1", "choppsthicc", "koryoboi", "jjojoof", "joyce.liang0", "shwetananaaware", "danielxzhao", "crustalyang", "elleenie.kim", "ramenking333", "isabellliu", "luharok06", "_elisabeth.mathis_", "allisonn.kim", "a.kimchi_", "guava.ram", "greydanv", "qwertywiejxndb_742", "presidentsamlu", "numberlinksnumber1", "francis_li1", "ian_vo_7", "jakeshin9", "jongyunshin229", "bo.nguyxn", "russ_c4", "tiff.anyluong", "lqurq.l", "alexhshi", "abhiritdas", "hitstarana", "disar_ray_", "harshinisriniv", "theultrahdgamer", "_rohansrinivas_", "_kennethyao", "seter_pong", "sanjanaaap", "un.ecorn", "nicolexxuu", "maya.kookie97", "its.eugene", "mwathayu__k100", "matt22k_", "stegosaurus_in_highschool", "sahillalaniii", "rikiszstudio", "chanev_05", "ht_wuwu", "braandonalee", "diegojs2005", "13r4dy", "rachael.yna", "a.terry__", "gallardoalexis4", "jam_bakrin", "hongdou_taro", "marcus_goobie", "abhiritdas2", "wholesome_memes13", "duncantlynch", "superstorm202", "mixerstreamerscentral", "a.das_13", "thiccpapibreadloaf", "_________nayao", "prmdyaputra_77", "loneranger_808", "jack_g.j", "thespicyvariety", "shivaay22"]}
+    #main_process_username("steveyilicious", a)
     #print(list(frozenset().union(*[frozenset(["a", "b"]), (frozenset(["c", "b"]))])))
     #b = {"bob" : ["sam", "steven"]}
     #a.update_all_followers(b)

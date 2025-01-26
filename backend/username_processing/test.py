@@ -6,7 +6,7 @@ import inspect
 
 
 
-USERNAME = "steveyivicious"
+USERNAME = "irvinehacks2025_4"
 PASSWORD = "1028571DV"
 
 
@@ -30,4 +30,19 @@ def first_time_login_user():
 #print(cl.user_followers("70684503354")) 
 
 if __name__ == '__main__':
+    # a = Client()
+    # username = "filthy_franks_partner"
+    # session = a.load_settings("session.json")
+    # a.set_settings(session)
+    # a.login(USERNAME, PASSWORD)
+    # user_id = a.user_info_by_username_v1(username).pk
+    # dictt = a.user_followers(user_id)
+    # result = {username: []}
+    # for short in dictt.values():
+    #     result[username].append(short.username)
+    # print(result)
+
+    
+
+
     first_time_login_user()
