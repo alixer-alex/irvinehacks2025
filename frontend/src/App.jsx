@@ -28,7 +28,7 @@ function Page () {
   const MainContent = (props) => (
     <main className="main">
       <section>
-        <h1 className="text-box">Enter Instagram Username: </h1>
+        <h1 className="text-label">Enter Instagram Username: </h1>
         <User_Input/>
         <DisplayGraph username={props.username} />
       </section>
@@ -43,7 +43,7 @@ function Page () {
     setUsername(value.value)
   };
 
-  const User_Input = ({ label}) => {
+  const User_Input = ({ label }) => {
     const handleKeyDown = (e) => {
       if (e.key === 'Enter') {
         handleEnter(e.target); // Call onEnter handler when Enter is pressed
@@ -51,10 +51,11 @@ function Page () {
     };
 
   return (
-    <div className="input">
+    <div className="input-text">
       <label>{label}</label>
       <input
         type="text"
+        class="modern-textbox"
         onKeyDown={handleKeyDown} // Listen for key presses
       />
     </div>
