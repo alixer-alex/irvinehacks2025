@@ -32,6 +32,7 @@ class CentralAccount:
     def __init__(self):
         self.central_account = Client()
 
+
     def login_user(self):
         """
         Attempts to login to Instagram using either the provided session information
@@ -95,7 +96,7 @@ class CentralAccount:
         return result
 
 
-    def write_followers(self, user_with_followers: dict):
+    def update_all_followers(self, user_with_followers: dict):
         """
         Writes to all_followers.json by appending to its current dictionary with the new dictionary
     
@@ -104,7 +105,8 @@ class CentralAccount:
         Returns:
             void.
         """
-        with open("all_followers.json", "r") as infile:
+        all_flwrs_path = Path("all_followers.json")
+        with all_flwrs_path.open("r") as infile:
             old_users_and_flwrs = infile.read() #returns a string
 
         #parse the old data
@@ -114,7 +116,7 @@ class CentralAccount:
         parsed_old_users_and_flwrs.update(user_with_followers)
 
         #write it back to the file
-        with open("all_followers.json", "w") as outfile:
+        with all_flwrs_path.open("w") as outfile:
             json.dump(parsed_old_users_and_flwrs, outfile)
 
 
@@ -140,6 +142,8 @@ class CentralAccount:
     def update_mutuals(self, new_mutuals: dict):
         """
         Writes in the mutual followers of a new user into mutual_followers.json
+        Here's an example format of the JSON file, except note that in reality, everything will be in-line.
+        There will be no newlines in the file
 
         {
         "steven":
@@ -155,7 +159,8 @@ class CentralAccount:
             void
         """
         #get the current mutual_followers dictionary from mutual_followers.json
-        with open("mutual_followers.json", "r") as infile:
+        mutual_path = Path("mutual_followers.json")
+        with mutual_path.open("r") as infile:
             old_mutual_flwrs = infile.read()
         
         #turn the json string into a dictionary
@@ -164,7 +169,7 @@ class CentralAccount:
         parsed_old_mutual_flwrs.update(new_mutuals)
 
         #write it back into the file
-        with open("mutual_followers.json", "w") as outfile:
+        with mutual_path.open("w") as outfile:
             json.dump(parsed_old_mutual_flwrs, outfile)
 
 
@@ -186,8 +191,9 @@ if __name__ == '__main__':
 
     a = CentralAccount()
     #a.login_user()
-    new_mutuals = {"test": ["demo1","demo2"]}
+    new_mutuals = {"test2": ["demo1","demo2"]}
     a.update_mutuals(new_mutuals)
+    a.update_all_followers(new_mutuals)
     #print(inspect.signature(a.central_account.user_id_from_username))
     #print(a.central_account.user_info_by_username(USERNAME))
     #print(a.central_account.user_followers("13586646940"))
