@@ -6,7 +6,7 @@ from pathlib import Path
 import json
 
 
-USERNAME = "steveyivicious"
+USERNAME = "irvinehacks2025_1"
 PASSWORD = "1028571DV"
 """
 Remember: A connection between nodes is only made when people follow each other
@@ -120,6 +120,7 @@ class CentralAccount:
         #write it back to the file
         with all_flwrs_path.open("w") as outfile:
             json.dump(parsed_old_users_and_flwrs, outfile)
+            outfile.flush()
 
 
     def get_mutuals(self, new_user: dict):
@@ -203,6 +204,7 @@ class CentralAccount:
         #write it back into the file
         with mutual_path.open("w") as outfile:
             json.dump(parsed_old_mutual_flwrs, outfile)
+            outfile.flush()
 
 
     def add_mutuals(self, new_mutuals: dict):
@@ -241,6 +243,7 @@ class CentralAccount:
         #write it back into the file
         with mutual_path.open("w") as outfile:
             json.dump(parsed_old_mutual_flwrs, outfile)
+            outfile.flush()
 
 
 def startup():
@@ -248,6 +251,12 @@ def startup():
     central_account.login_user()
     return central_account
 
+
+def main_process_username(username: str, ctr_acc: CentralAccount):
+    flwrs_dict = ctr_acc.get_followers(username)
+    ctr_acc.update_all_followers(flwrs_dict)
+    flwr_mutuals = ctr_acc.get_mutuals(flwrs_dict) #remember, this also updates the mutual follower lists of other accs
+    ctr_acc.add_mutuals(flwr_mutuals)
 
 
 ###RUN EACH TIME YOU PULL FROM GITHUB### TODO: FIGURE OUT IF THIS WILL WORK WHEN YOU PUBLISH THE PROJECT
@@ -261,7 +270,11 @@ def first_time_login_user():
 
 if __name__ == '__main__':
     a = startup()
-    print(a.get_followers("steveyivicious"))
+    b = a.get_followers("steveyivicious")
+    print(b)
+    a.update_all_followers(b)
+    c = a.get_mutuals(b)
+    a.add_mutuals(c)
 
     #new_mutuals = {"jessica": ["steven"]}
     #print(a.get_mutuals(new_mutuals))
