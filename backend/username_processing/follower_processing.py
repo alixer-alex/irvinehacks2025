@@ -267,6 +267,8 @@ if __name__ == '__main__':
     b = a.get_followers("steveyivicious")
     print(b)
     a.update_all_followers(b)
+    c = a.get_mutuals(b)
+    a.add_mutuals(c)
 
     #new_mutuals = {"jessica": ["steven"]}
     #print(a.get_mutuals(new_mutuals))
