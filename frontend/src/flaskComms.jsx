@@ -38,7 +38,8 @@ export const LoadGraph = (username) => {
     //TEMP CHANGE: the port was originally 5000
     //using this below line of code will let you use your local files, instead of the deployed app's files
     const url = "http://localhost:5000/api/" + username.username;
-    //this was the original line of code, one of the final changes before "finishing" the competition
+    //TODO: this was the original line of code, one of the final changes before "finishing" the competition
+    //TOOD: ask Alex to update the railway app or whatever so that the api now uses the updated version of our files
     //const url = "https://irvinehacks2025-production.up.railway.app/api/" + username.username;
     try {
       const response = await fetch(url);

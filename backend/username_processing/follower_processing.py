@@ -1,6 +1,10 @@
 from instagrapi import Client
+from instagrapi.exceptions import (
+    BadPassword, ReloginAttemptExceeded, ChallengeRequired,
+    SelectContactPointRecoveryForm, RecaptchaChallengeForm,
+    FeedbackRequired, PleaseWaitFewMinutes, LoginRequired
+)
 import instagrapi as i
-from instagrapi.exceptions import LoginRequired
 import logging
 from pathlib import Path
 import json
@@ -16,7 +20,7 @@ You'll be receiving the username of the new person that entered their username
 
 
 
-def example(a, b):
+def example_func_to_show_documentation_style(a, b):
     """
     Args:
         a: a tuple that represents yada yada
@@ -30,6 +34,16 @@ def example(a, b):
 class CentralAccount:
     def __init__(self):
         self.central_account = Client()
+        ###YOU ADDED THIS BECAUSE YOU DIDN'T WANT TO PERMANENTLY FUCK OVER YOUR ACCOUNTS
+        def handle_exception(client, e):
+            if isinstance(e, PleaseWaitFewMinutes):
+                print("TESTING TESTING TESTING")
+                # self.freeze(str(e), hours=1)
+            raise e
+        self.central_account.handle_exception = handle_exception
+        print("hi!")
+        print(self.central_account.handle_exception)
+        #END BLOCK OF ADDING SHIT
 
 
     def login_user(self):
@@ -40,6 +54,7 @@ class CentralAccount:
         logger = logging.getLogger()
 
         self.central_account = Client()
+        #use this line to add a delay range
         self.central_account.delay_range = [1, 3]
         session = self.central_account.load_settings("session.json")
 
@@ -89,14 +104,11 @@ class CentralAccount:
         """
         # get dictionary (key: user id, value: UserShort dict w username, etc.)
         user_id = (self.central_account.user_info_by_username_v1(username)).pk
-        dictt = self.central_account.user_followers(user_id, amount=100)
+        #adding <amount=100> to the parameters will limit the number of followers we try to take
+        followers = self.central_account.user_followers(user_id, amount=0)
+        #build up the result
         result = {username: []}
-        """
-        for short in dictt:
-            result[username].append(short.username)
-        """
-        
-        for short in dictt.values():
+        for short in followers.values():
            result[username].append(short.username)
         
         return result
@@ -111,6 +123,7 @@ class CentralAccount:
         Returns:
             void.
         """
+        #read the old data
         all_flwrs_path = Path("all_followers.json")
         with all_flwrs_path.open("r") as infile:
             old_users_and_flwrs = infile.read() #returns a string
@@ -121,7 +134,7 @@ class CentralAccount:
         else:
             parsed_old_users_and_flwrs = json.loads(old_users_and_flwrs)
 
-        #append the new data to the old
+        #put the new data into the old
         parsed_old_users_and_flwrs.update(user_with_followers)
 
         #write it back to the file
@@ -152,7 +165,7 @@ class CentralAccount:
             A dictionary of the format {"user's-username-here" : [mutualfollower1, mutualfollower2]}
         """
         new_user_username = list(new_user.keys())[0]
-        mutuals = {new_user_username : []}
+        new_user_mutuals = {new_user_username : []}
 
         #get the all_followers string
         with open("all_followers.json", 'r') as infile:
@@ -163,34 +176,36 @@ class CentralAccount:
         else:
             followers = json.loads(contents)
 
-        #for each user from all_followers
-        for other_username, follower_list in followers.items():
-            #if the new_user is already in update_all_followers
+        #for each user, and their followers, from all_followers
+        for other_username, other_followers in followers.items():
+            #if the new user is the other user
             if other_username == new_user_username:
                 pass
             else:
+                #get the mutual followers of the new user and the other user
                 other_users_new_mutuals = []
-                both_following = frozenset(follower_list) & frozenset(new_user[new_user_username])
-                #if the new_user is in the user's follower list, and the user is in the new_user's flwr list
-                if (new_user_username in follower_list) & (other_username in new_user[new_user_username]):
-                    #so update the new user's mutuals first
-                    mutuals[new_user_username].append(other_username)
-
+                mutual_followers = frozenset(other_followers) & frozenset(new_user[new_user_username])
+                #if the new user is in the other user's follower list, and the other user is in the new user's follower list
+                if (new_user_username in other_followers) & (other_username in new_user[new_user_username]):
+                    #update the new user's mutuals first
+                    new_user_mutuals[new_user_username].append(other_username)
                     #then add the new user's username to the other user's slated mutuals
                     other_users_new_mutuals.append(new_user_username)
                     
-                #if the new_user follows a same person as the other user (the user from the json)
-                if len(both_following) != 0: 
-                    mutuals[new_user_username] = list(frozenset().union(*[frozenset(mutuals[new_user_username]), both_following]))
-                    #long list frozenset() yada yada call not ncessary for other_users_new_mutuals, because that's checked in
-                    #update_mutuals
-                    other_users_new_mutuals += list(both_following)
+                #if the new user and the other user have mutual followers
+                if len(mutual_followers) != 0:
+                    #update the new user's mutuals
+                    new_user_mutuals[new_user_username] = list(frozenset().union(*[frozenset(new_user_mutuals[new_user_username]), mutual_followers]))
+                    #update the other user's mutuals
+                    other_users_new_mutuals += list(mutual_followers)
                 
-                #update the other user's mutuals list on mutual_followers.json, if not empty
+                #if the other user has new mutuals, update the other user's mutuals list on mutual_followers.json
                 if len(other_users_new_mutuals) != 0:
+                    #the long list(frozenset()) yada yada call is unnecessary for this, because that's checked in
+                    #update_mutuals
                     self.update_mutuals(other_username, other_users_new_mutuals)
 
-        return mutuals
+        return new_user_mutuals
 
 
     def update_mutuals(self, username: str, new_mutuals: list):
@@ -219,13 +234,14 @@ class CentralAccount:
             parsed_old_mutual_flwrs = json.loads(old_mutual_flwrs)
 
         #update the mutuals list of the username
-        #if the username is not in the parsed old mutual followers keys
+        #if we have no record of the username's mutuals in mutual_followers.json
         if (username not in parsed_old_mutual_flwrs.keys()):
             parsed_old_mutual_flwrs[username] = new_mutuals
+        #otherwise, the username is already in mutual_followers.json
         else:
-            #all this set math is done to prevent duplicate follower names in the follower's list
-            #Add the new followers to the mutual followers list. Only new followers not currently
-            #present in mutual followers list already.
+            ##all this set math is done to prevent duplicate follower names in the follower's list
+            #Add the new followers to the mutual followers list. Only new followers not
+            #already present in mutual followers list will be added.
             parsed_old_mutual_flwrs[username] = list(frozenset().union(*[frozenset(parsed_old_mutual_flwrs[username]), (frozenset(new_mutuals))]))
 
         #write it back into the file
@@ -234,7 +250,7 @@ class CentralAccount:
             outfile.flush()
 
 
-    def add_mutuals(self, new_mutuals: dict):
+    def overwrite_mutuals(self, new_mutuals: dict):
         """
         Writes in the mutual followers of a new user into mutual_followers.json
         Here's an example format of the JSON file, except note that in reality, everything will be in-line.
@@ -284,14 +300,15 @@ def main_process_username(username: str, ctr_acc: CentralAccount):
     Assumes that, if a username is not in the keys of all_followers, then it is not in the keys of
     mutual_followers either
     """
-    #get the current all_followers in order to check if we already scraped thea ccount
-    with Path("C:\\Programming\\IrvineHacks2025\\irvinehacks2025\\backend\\all_followers.json").open("r") as infile:
+    #get the current all_followers in order to check if we already scraped the account
+    with Path("all_followers.json").open("r") as infile:
         all_accounts = infile.read()
     if all_accounts == "":
         parsed_all_accounts = {}
     else:
         parsed_all_accounts = json.loads(all_accounts)
-    #check if we already scraped the account
+    #check if we already scraped the account 
+    # TODO: WE MIGHT WANT TO CHANGE THIS SO THAT WE CAN RE-SCRAPE ACCOUNTS
     if (username not in parsed_all_accounts.keys()):
             flwrs_dict = ctr_acc.get_followers(username)
     else:
@@ -299,10 +316,16 @@ def main_process_username(username: str, ctr_acc: CentralAccount):
     
     ctr_acc.update_all_followers(flwrs_dict)
     flwr_mutuals = ctr_acc.get_mutuals(flwrs_dict) #remember, this also updates the mutual follower lists of other accs
-    ctr_acc.add_mutuals(flwr_mutuals)
+    #we overwrite the mutuals because people may gain new followers,
+    #meaning they may have gained new follower mutuals since the last time they entered their username
+    ctr_acc.overwrite_mutuals(flwr_mutuals)
+    
 
 
-###RUN EACH TIME YOU PULL FROM GITHUB### TODO: FIGURE OUT IF THIS WILL WORK WHEN YOU PUBLISH THE PROJECT
+###RUN EACH TIME YOU PULL FROM GITHUB TODO: MAY NOT BE NECESSARY. THIS MAY ALSO BE THE 
+# ##ROOT CAUSE OF A LOT OF OUR PROBLEMS...BECAUSE WE ARE MAKING INSTAGRAM THINK WE'RE DOING
+# BRAND NEW LOGINS FROM MULTIPLE DEVICES ALL AT THE SAME TIME### 
+# TODO: FIGURE OUT IF THIS WILL WORK WHEN YOU PUBLISH THE PROJECT
 def first_time_login_user():
     cl = Client()
     cl.login(USERNAME, PASSWORD)
@@ -312,9 +335,20 @@ def first_time_login_user():
 
 
 if __name__ == '__main__':
+    #THE OVERALL TEST
+    # main_process_username("steveyilicious", startup())
+
+    #THE FINAL, BIGGEST TEST
+    # main_process_username("janepwp", startup())
+
+    ###YOU ADDED THIS BECAUSE YOU WANTED TO TEST OUT THE EXCEPTION HANDLER, BUT IT DOESN'T WORK
     a = startup()
+    a.central_account.handle_exception(a, PleaseWaitFewMinutes)
+    #END BLOCK OF BULLSHIT
+
+
     #print(a.central_account.user_followers_v1(a.central_account.user_info_by_username_v1("filthy_franks_partner").pk))
-    print(a.get_followers("steveyilicious"))
+    
     #main_process_username("filthy_franks_partner", a)
 
     # a = {"a" : ["b", "c"]}
@@ -326,7 +360,7 @@ if __name__ == '__main__':
     #print(list(frozenset().union(*[frozenset(["a", "b"]), (frozenset(["c", "b"]))])))
     #b = {"bob" : ["sam", "steven"]}
     #a.update_all_followers(b)
-    #a.add_mutuals(a.get_mutuals(b))
+    #a.overwrite_mutuals(a.get_mutuals(b))
     #main_process_username("steveyivicious", a)
 
     #new_mutuals = {"jessica": ["steven"]}
@@ -334,6 +368,6 @@ if __name__ == '__main__':
 
     # with Path("C:\\Programming\\IrvineHacks2025\\irvinehacks2025\\backend\\username_processing\\empty.json").open("r") as infile:
     #     empty_str = infile.read()
-    # a.add_mutuals({"a" : ["b", "c"]})
+    # a.overwrite_mutuals({"a" : ["b", "c"]})
     #print(a.central_account.user_followers(a.central_account.user_id)
 
