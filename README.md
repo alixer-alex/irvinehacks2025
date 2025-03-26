@@ -6,6 +6,8 @@ Very cool and awsome project
 Need to run the backend and frontend at the same time.
 
 To do so:
+    Note) For if you don’t have a session.json: cd into backend. In terminal, type py first_time_login.py
+
     1) cd into backend. Then, in the terminal, type py app.py
 
     2) cd into frontend, IN A DIFFERENT TERMINAL. type npm run dev.

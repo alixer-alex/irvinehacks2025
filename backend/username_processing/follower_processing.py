@@ -6,8 +6,8 @@ from pathlib import Path
 import json
 
 
-USERNAME = "irvinehacks2025_4"
-PASSWORD = "1028571DV"
+USERNAME = "irvinehacks2025_2"
+PASSWORD = "7Ysteveni*"
 """
 Remember: A connection between nodes is only made when people follow each other
 
@@ -40,6 +40,7 @@ class CentralAccount:
         logger = logging.getLogger()
 
         self.central_account = Client()
+        self.central_account.delay_range = [1, 3]
         session = self.central_account.load_settings("session.json")
 
         login_via_session = False
@@ -87,11 +88,17 @@ class CentralAccount:
             A dictionary that is of the format: {username_from_arg : [follower1name, follower2name]}
         """
         # get dictionary (key: user id, value: UserShort dict w username, etc.)
-        user_id = self.central_account.user_info_by_username_v1(username).pk
-        dictt = self.central_account.user_followers(user_id)
+        user_id = (self.central_account.user_info_by_username_v1(username)).pk
+        dictt = self.central_account.user_followers(user_id, amount=100)
         result = {username: []}
+        """
+        for short in dictt:
+            result[username].append(short.username)
+        """
+        
         for short in dictt.values():
            result[username].append(short.username)
+        
         return result
 
 
@@ -278,7 +285,7 @@ def main_process_username(username: str, ctr_acc: CentralAccount):
     mutual_followers either
     """
     #get the current all_followers in order to check if we already scraped thea ccount
-    with open("all_followers.json") as infile:
+    with Path("C:\\Programming\\IrvineHacks2025\\irvinehacks2025\\backend\\all_followers.json").open("r") as infile:
         all_accounts = infile.read()
     if all_accounts == "":
         parsed_all_accounts = {}
@@ -305,8 +312,9 @@ def first_time_login_user():
 
 
 if __name__ == '__main__':
-    pass
-    #a = startup()
+    a = startup()
+    #print(a.central_account.user_followers_v1(a.central_account.user_info_by_username_v1("filthy_franks_partner").pk))
+    print(a.get_followers("steveyilicious"))
     #main_process_username("filthy_franks_partner", a)
 
     # a = {"a" : ["b", "c"]}

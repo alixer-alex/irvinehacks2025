@@ -4,10 +4,11 @@ from instagrapi.exceptions import LoginRequired
 import logging
 import inspect
 
+#steveyilicious
 
 
-USERNAME = "irvinehacks2025_4"
-PASSWORD = "1028571DV"
+USERNAME = "irvinehacks2025_2"
+PASSWORD = "7Ysteveni*"
 
 
 ###ONLY NEEDED ONCE IN YOUR LIFETIME, BECAUSE THIS JUST MAKES "session.json"###
