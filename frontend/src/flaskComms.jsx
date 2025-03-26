@@ -34,7 +34,12 @@ export const LoadGraph = (username) => {
   const registerEvents = useRegisterEvents();
   async function getData(){
     
-    const url = "https://irvinehacks2025-production.up.railway.app/api/" + username.username;
+    // can use this line instead:
+    //TEMP CHANGE: the port was originally 5000
+    //using this below line of code will let you use your local files, instead of the deployed app's files
+    const url = "http://localhost:5000/api/" + username.username;
+    //this was the original line of code, one of the final changes before "finishing" the competition
+    //const url = "https://irvinehacks2025-production.up.railway.app/api/" + username.username;
     try {
       const response = await fetch(url);
       if (!response.ok) {

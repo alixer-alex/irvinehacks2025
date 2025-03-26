@@ -1,14 +1,3 @@
-"""
-RUN INSTRUCTIONS:
-1) (Only needs to be done if logging in new account, this command generates a new device which is ill-advised)
-	cd into backend, and run <py first_time_login.py> on the command line.
-
-2) cd into frontend, run <npm run dev> on the command line.
-
-3) UNSURE....
-"""
-
-
 
 # import time
 from flask import Flask, jsonify, request, render_template
@@ -30,7 +19,7 @@ master = follower_processing.startup()
 def home():
 	return "<p> Hello! </p>"	
 
-#when someone visits http://localhost:5173/api/<username>, get_username is called
+
 """
 for some reason, before continuing the work on this project after a long time of pause,
 the code for def get_username was originally like this:
@@ -59,7 +48,7 @@ the code for def get_username was originally like this:
 				data = json.load(f) 
 		return jsonify(data), 400
 """
-
+#when someone visits http://localhost:5173/api/<username>, get_username is called
 @app.route('/api/<username>', methods=['GET'])
 def get_username(username): #flask automatically calls this when a user makes an HTTP request
 	#"take the username from the info in the url (../api?)"
@@ -87,5 +76,7 @@ def get_username(username): #flask automatically calls this when a user makes an
 # print(get_username(Client()))
 
 if __name__ == '__main__':
+	#TEMP CHANGE: default was originally 5000
+	#NOTE: changing the <default> value here will change the port that the server is on...I think??
 	app.run(debug = False, port=os.getenv("PORT", default=5000))
 	
