@@ -8,14 +8,28 @@ import instagrapi as i
 import logging
 from pathlib import Path
 import json
+import datetime
+from instaloader import *
 
 
-USERNAME = "irvinehacks2025_2"
-PASSWORD = "7Ysteveni*"
+USERNAME = "irvinehacks2025_3"
+PASSWORD = "1028571DV"
 """
 Remember: A connection between nodes is only made when people follow each other
 
 You'll be receiving the username of the new person that entered their username
+
+"Instaloader has a logic to keep track of its requests to Instagram and to obey their rate limits.
+
+The rate controller assumes that:
+
+1) at one time, Instaloader is the only application that consumes requests, i.e. neither the 
+    Instagram browser interface, nor a mobile app, nor another Instaloader 
+    instance is running in parallel, and 
+2) no requests had been consumed when Instaloader starts.
+
+The latter one implies that restarting or reinstantiating Instaloader often within short time is prone 
+to cause a 429."
 """
 
 
@@ -34,16 +48,17 @@ def example_func_to_show_documentation_style(a, b):
 class CentralAccount:
     def __init__(self):
         self.central_account = Client()
-        ###YOU ADDED THIS BECAUSE YOU DIDN'T WANT TO PERMANENTLY FUCK OVER YOUR ACCOUNTS
+        self.central_account.delay_range = [1, 3] #use this line to add a delay range
+
+        #this exception handler will let us know what action should be taken depending on the exception
         def handle_exception(client, e):
             if isinstance(e, PleaseWaitFewMinutes):
-                print("TESTING TESTING TESTING")
-                # self.freeze(str(e), hours=1)
+                print("ERROR: For 1 hour, don't use the following account: " + USERNAME)
+                print("ERROR: Current time: ", datetime.datetime.now())
+                #TODO: I wonder what the instagrapi devs meant when they put in this .freeze function call?
+                #self.freeze(str(e), hours=1)
             raise e
         self.central_account.handle_exception = handle_exception
-        print("hi!")
-        print(self.central_account.handle_exception)
-        #END BLOCK OF ADDING SHIT
 
 
     def login_user(self):
@@ -52,10 +67,7 @@ class CentralAccount:
         or the provided username and password.
         """
         logger = logging.getLogger()
-
-        self.central_account = Client()
-        #use this line to add a delay range
-        self.central_account.delay_range = [1, 3]
+        
         session = self.central_account.load_settings("session.json")
 
         login_via_session = False
@@ -310,8 +322,9 @@ def main_process_username(username: str, ctr_acc: CentralAccount):
     #check if we already scraped the account 
     # TODO: WE MIGHT WANT TO CHANGE THIS SO THAT WE CAN RE-SCRAPE ACCOUNTS
     if (username not in parsed_all_accounts.keys()):
-            flwrs_dict = ctr_acc.get_followers(username)
+        flwrs_dict = ctr_acc.get_followers(username)
     else:
+        #flwrs_dict = ctr_acc.get_followers(username) #adding this line of code lets us re-scrape accounts
         flwrs_dict = {username: parsed_all_accounts[username]}
     
     ctr_acc.update_all_followers(flwrs_dict)
@@ -335,16 +348,34 @@ def first_time_login_user():
 
 
 if __name__ == '__main__':
+    pass
     #THE OVERALL TEST
-    # main_process_username("steveyilicious", startup())
+    main_process_username("steveyilicious", startup())
 
     #THE FINAL, BIGGEST TEST
     # main_process_username("janepwp", startup())
 
-    ###YOU ADDED THIS BECAUSE YOU WANTED TO TEST OUT THE EXCEPTION HANDLER, BUT IT DOESN'T WORK
-    a = startup()
-    a.central_account.handle_exception(a, PleaseWaitFewMinutes)
-    #END BLOCK OF BULLSHIT
+
+    """
+    L = Instaloader()
+    default_session_path = "C:\\Users\\steve\\AppData\\Local\\Instaloader\\session-" + USERNAME
+
+    try:
+        L.load_session_from_file(USERNAME, "session-irvinehacks2025_1")
+    except FileNotFoundError:
+        L.login(USERNAME, PASSWORD)
+        L.save_session_to_file("session-irvinehacks2025_1")
+
+    profile = Profile.from_username(L.context, USERNAME)
+    print(profile.username)
+    
+    for follower in profile.get_followers():
+        print(follower.username, end=" ")
+    print()
+    """
+    
+    
+
 
 
     #print(a.central_account.user_followers_v1(a.central_account.user_info_by_username_v1("filthy_franks_partner").pk))

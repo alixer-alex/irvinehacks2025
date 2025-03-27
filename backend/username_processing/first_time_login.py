@@ -7,8 +7,8 @@ import inspect
 #steveyilicious
 
 
-USERNAME = "irvinehacks2025_2"
-PASSWORD = "7Ysteveni*"
+USERNAME = "irvinehacks2025_1"
+PASSWORD = "1028571DV"
 
 
 ###ONLY NEEDED ONCE IN YOUR LIFETIME, BECAUSE THIS JUST MAKES "session.json"###
